@@ -18,26 +18,40 @@ const Signup = AsyncHandler(async (req, res) => {
             // Hash the password using bcrypt with a salt round of 12
             let hashedPassword = bcrypt.hashSync(password, 12)
 
-            // create a new user in the database
-            let user = await userModel.create({
-                first_name,
-                last_name,
-                email,
-                password: hashedPassword
-            })
 
-            // check if user is valid or not
-            if (user) {
-                // generates the jwt token  based on user Id and secret key stored in the environment variable
-                let token = await jwt.sign({ _id: user._id }, process.env.SECRET_KEY)
-                // if the token is generated
-                if (token) {
-                    res.json({
-                        user: user,
-                        token: token
-                    })
+            // checks that  user already exist or not by email
+            let userExist = await userModel.findOne({ email: email })
+            if (!userExist) {
+                // create a new user in the database
+                let user = await userModel.create({
+                    first_name,
+                    last_name,
+                    email,
+                    password: hashedPassword
+                })
+
+
+                // check if user is valid or not
+                if (user) {
+                    // generates the jwt token  based on user Id and secret key stored in the environment variable
+                    let token = await jwt.sign({ _id: user._id }, process.env.SECRET_KEY)
+                    // if the token is generated
+                    if (token) {
+                        res.json({
+                            user: user,
+                            token: token
+                        })
+                    }
                 }
+
             }
+            else {
+                res.json({ message: "user already exist" })
+            }
+
+
+
+
 
         }
 
