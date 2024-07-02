@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* styling the container of the signup and login page */
+.containerPage
+{
+    width: 850px;
+    height: 600px;
+}
+.joinUserBox
+{
+    background-image: linear-gradient(#355EAD, #AA00FA);
+}
+/* styling loader component */
+.loader
+{
+    background-color: rgba(128, 128, 128, 0.464);
+}
