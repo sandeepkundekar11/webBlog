@@ -1,36 +1,131 @@
-import { NavLink } from "react-router-dom"
-import CommanComponent from "../../helperComponents/CommanComponent"
+import { NavLink } from "react-router-dom";
+import CommanComponent from "../../helperComponents/CommanComponent";
+import { useState } from "react";
 
 const Login = () => {
-    return (
-        <CommanComponent heading="Welcome Back, Blogger!" subHeading="Nice to see you again"
-            text="Log in to access your personal dashboard, manage your posts, and stay connected with your readers.">
-            <div className="w-full h-full pl-4">
-                <h1 className="text-3xl font-bold">Login</h1>
-                <div className="mt-8">
-                    <p className="text-base">Email Address</p>
-                    <input type="email" placeholder="Email Address" className="w-11/12 h-9 mt-3 rounded-md outline-none pl-2 bg-transparent border border-gray-600" name="" id="" />
-                    <p className="warning text-red-600 text-sm"></p>
-                </div>
-                <div className="mt-8">
-                    <p className="text-base">Enter Password</p>
-                    <div className="w-11/12 flex justify-center items-center p-1 mt-3  bg-white px-2 h-9 rounded-md bg-transparent border border-gray-600 ">
-                        <input type="password" placeholder="Password" className=" w-full h-full  outline-none pl-2 bg-transparent" name="" id="" />
-                        <button>show</button>
-                    </div>
-                    <p className="warning text-red-600 text-sm"></p>
-                </div>
+  // form data
+  const [UserData, setUserData] = useState({
+    email: "",
+    password: "",
+  });
 
-                <div className="signupBtns mt-8">
-                    <button className="w-11/12 text-white hover:bg-blue-700 h-11 bg-blue-600 rounded-lg shadow-md">
-                        Login
-                    </button>
-                </div>
+  //   setting the warnings
 
-                <span className="">Already have an account ? <NavLink className="font-bold" to="/signup"> Signup</NavLink></span>
-            </div>
+  const [UserDataWarnings, setUserDataWarnings] = useState({
+    emailWarning: "",
+    passwordWarning: "",
+  });
+  //   show hide password
+  const [showPassword, setShowPassword] = useState(false);
 
-        </CommanComponent>
-    )
-}
-export default Login
+  //   setting the userData
+  const HandleInput = (e) => {
+    let { name, value } = e.target;
+    setUserData({
+      ...UserData,
+      [name]: value,
+    });
+  };
+
+  //   handling the Login fuction and checks the each input filed and if input fileds are not valid then throw an error
+  const HandleLogin = () => {
+    // setting the demo warning
+    let newWarnings = {
+      emailWarning: "",
+      passwordWarning: "",
+    };
+    //  checking that user entered input or not
+    // checking email
+    if (UserData.email.length < 6) {
+      newWarnings.emailWarning = "Email can't be less the 5 characters";
+    } else {
+      newWarnings.emailWarning = "";
+    }
+
+    // checking password
+
+    if (UserData.password.length < 6) {
+      newWarnings.passwordWarning = "Password can't be less then 5 characters";
+    } else {
+      newWarnings.passwordWarning = "";
+    }
+    setUserDataWarnings(newWarnings);
+
+    // checking for the both conditions
+
+    if (Object.values(UserData).every((ele) => ele.length >= 5)) {
+      // api call
+    }
+  };
+  return (
+    <CommanComponent
+      heading="Welcome Back, Blogger!"
+      subHeading="Nice to see you again"
+      text="Log in to access your personal dashboard, manage your posts, and stay connected with your readers."
+    >
+      <div className="w-full h-full pl-4">
+        <h1 className="text-3xl font-bold">Login</h1>
+        <div className="mt-8">
+          {/* email */}
+          <p className="text-base">Email Address</p>
+          {/* entering the email */}
+          <input
+            type="email"
+            placeholder="Email Address"
+            onChange={HandleInput}
+            className="w-11/12 h-9 mt-3 rounded-md outline-none pl-2 bg-transparent border border-gray-600"
+            name="email"
+            id=""
+          />
+          {/* if user enters wrong information (Email) the it will throw an warning */}
+          <p className="warning text-red-600 text-sm">
+            {UserDataWarnings.emailWarning}
+          </p>
+        </div>
+        <div className="mt-8">
+          {/* password */}
+          <p className="text-base">Enter Password</p>
+          <div className="w-11/12 flex justify-center items-center p-1 mt-3  bg-white px-2 h-9 rounded-md bg-transparent border border-gray-600 ">
+            {/* enter the password */}
+            <input
+              // toggling the password type
+              type={showPassword ? "text" : "password"}
+              onChange={HandleInput}
+              placeholder="Password"
+              className=" w-full h-full  outline-none pl-2 bg-transparent"
+              name="password"
+              id=""
+            />
+            {/* fucntion to toggle the password type */}
+            <button onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? "hide" : "show"}
+            </button>
+          </div>
+          {/* if user enters wrong information (password) the it will throw an warning */}
+          <p className="warning text-red-600 text-sm">
+            {UserDataWarnings.passwordWarning}
+          </p>
+        </div>
+
+        <div className="signupBtns mt-8">
+          {/* HandleLogin fucntion for submiting the form */}
+          <button
+            className="w-11/12 text-white hover:bg-blue-700 h-11 bg-blue-600 rounded-lg shadow-md"
+            onClick={HandleLogin}
+          >
+            Login
+          </button>
+        </div>
+
+        <span className="">
+          {/* navigate the Signup page */}
+          Already have an account ?{" "}
+          <NavLink className="font-bold" to="/signup">
+            Signup
+          </NavLink>
+        </span>
+      </div>
+    </CommanComponent>
+  );
+};
+export default Login;
