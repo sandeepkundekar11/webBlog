@@ -1,19 +1,33 @@
-import { useState } from "react"
-import { NavLink } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { NavLink, useNavigate } from "react-router-dom"
+import { SignupCall } from "../../Redux/Actions/UserAction"
 import CommanComponent from "../../helperComponents/CommanComponent"
+import Loader from "../../helperComponents/Loader"
 const SignUp = () => {
+
+    const Dispatch = useDispatch()
+    const Navigate=useNavigate()
+    const { UserLoading, UserState,UserError } = useSelector((state) => state.user)
+    useEffect(() => {
+        // checking if user token is present the navigate home 
+        let token = localStorage.getItem("token")
+        if (token) {
+            Navigate("/home")
+        }
+    }, [])
 
     // Signup data state
     const [UserData, setUserData] = useState({
-        fist_name: "",
+        first_name: "",
         last_name: "",
-        email: "",
-        password: ""
+        password: "",
+        email: ""
     })
 
     // signup warnings
     const [UserDataWaring, setUserDataWarning] = useState({
-        fist_nameWarning: "",
+        first_nameWarning: "",
         last_nameWarning: "",
         emailWarning: "",
         passwordWarning: ""
@@ -33,17 +47,17 @@ const SignUp = () => {
     const SubmitForm = () => {
         // initializing the demo warning
         let newWarning = {
-            fist_nameWarning: "",
+            first_nameWarning: "",
             last_nameWarning: "",
             emailWarning: "",
             passwordWarning: ""
         }
         // checking first name
-        if (UserData.fist_name.length < 6) {
-            newWarning.fist_nameWarning = "Fist name can't be less the 5 characters"
+        if (UserData.first_name.length < 6) {
+            newWarning.first_nameWarning = "Fist name can't be less the 5 characters"
         }
         else {
-            newWarning.fist_nameWarning = ""
+            newWarning.first_nameWarning = ""
         }
 
         // checking last name
@@ -77,6 +91,8 @@ const SignUp = () => {
 
         if (Object.values(UserData).every((ele) => ele.length >= 6)) {
             // call api
+            console.log(UserData,"sd")
+            Dispatch(SignupCall(UserData,Navigate))
         }
 
 
@@ -92,7 +108,7 @@ const SignUp = () => {
                         {/* first name */}
                         <p className="text-base">First Name</p>
                         {/* entering first name */}
-                        <input type="text" onChange={HandleInput} name="fist_name" placeholder="First Name" className="w-11/12 h-9 mt-2 rounded-md outline-none pl-2 bg-transparent border border-gray-600" id="" />
+                        <input type="text" onChange={HandleInput} name="first_name" placeholder="First Name" className="w-11/12 h-9 mt-2 rounded-md outline-none pl-2 bg-transparent border border-gray-600" id="" />
                         {/* log the warning when user not enter first name enter invalid first name */}
                         <p className="warning text-red-600 text-sm">{UserDataWaring.fist_nameWarning}</p>
                     </div>
@@ -132,12 +148,16 @@ const SignUp = () => {
                         <button className="w-11/12 text-white hover:bg-blue-700 h-11 bg-blue-600 rounded-lg shadow-md" onClick={SubmitForm}>
                             SignUp
                         </button>
-                        <p className="warning text-red-600 text-sm"></p>
+                        <p className="warning text-red-600 text-sm">{UserError}</p>
                     </div>
 
-                    <span>Don't have an account ? <NavLink className="font-bold" to="/login"> Login</NavLink></span>
+                    <span>Don't have an account ? <NavLink className="font-bold" onClick={()=>Navigate("/login")}> Login</NavLink></span>
                 </div>
             </CommanComponent>
+            {
+                UserLoading&&
+                <Loader/>
+            }
         </>
     )
 }
