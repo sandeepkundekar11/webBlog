@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { NavLink, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { SignupCall } from "../../Redux/Actions/UserAction"
 import CommanComponent from "../../helperComponents/CommanComponent"
 import Loader from "../../helperComponents/Loader"
@@ -135,8 +135,8 @@ const SignUp = () => {
                         <p className="text-base">Enter Password</p>
                         <div className="w-11/12 flex justify-center items-center p-1  bg-white px-2 h-9 rounded-md bg-transparent border border-gray-600 ">
                             {/* entering the password and show hiding the type of the password after clicking on show hide button */}
-                            <input name="password" onChange={HandleInput} type={showpassowrd ? "password" : "text"} placeholder="Password" className=" w-full h-full  outline-none pl-2 bg-transparent" id="" />
-                            <button onClick={() => setshowPassword(!showpassowrd)}>{showpassowrd ? "show" : "hide"}</button>
+                            <input name="password" onChange={HandleInput} type={showpassowrd ? "text" : "password"} placeholder="Password" className=" w-full h-full  outline-none pl-2 bg-transparent" id="" />
+                            <button onClick={() => setshowPassword(!showpassowrd)}>{showpassowrd ? "hide" : "show"}</button>
                         </div>
                         {/* if user user enter wrong or invalid password then log the warning */}
                         <p className="warning text-red-600 text-sm">{UserDataWaring.passwordWarning}</p>
@@ -151,7 +151,7 @@ const SignUp = () => {
                         <p className="warning text-red-600 text-sm">{UserError}</p>
                     </div>
 
-                    <span>Don't have an account ? <NavLink className="font-bold" onClick={()=>Navigate("/login")}> Login</NavLink></span>
+                    <span>Don't have an account ? <span className="font-bold cursor-pointer hover:text-blue-800" onClick={()=>Navigate("/login")}> Login</span></span>
                 </div>
             </CommanComponent>
             {

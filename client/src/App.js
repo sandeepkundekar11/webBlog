@@ -13,8 +13,9 @@ const App = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<PrivateComponent />}>
-            <Route path="home" element={<Home />} />
+            <Route path="/" element={<Home />} />
           </Route>
+          <Route path='*' element={<h1>Route not available</h1>}/>
         </Routes>
       </BrowserRouter>
     </Provider>
