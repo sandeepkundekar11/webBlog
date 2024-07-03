@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { LoginCall } from "../../Redux/Actions/UserAction";
 import CommanComponent from "../../helperComponents/CommanComponent";
 import Loader from "../../helperComponents/Loader";
@@ -138,9 +138,9 @@ const Login = () => {
                 <span className="">
                     {/* navigate the Signup page */}
                     Already have an account ?{" "}
-                    <NavLink className="font-bold" onClick={() => Navigate("/signup")}>
+                    <span className="font-bold cursor-pointer hover:text-blue-800" onClick={() => Navigate("/signup")}>
                         Signup
-                    </NavLink>
+                    </span>
                 </span>
             </div>
             {

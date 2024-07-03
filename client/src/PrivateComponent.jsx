@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Navigate, Outlet } from "react-router-dom"
+import NavBar from "./Components/NavBar"
 
 const PrivateComponent = () => {
 
@@ -19,6 +20,8 @@ const PrivateComponent = () => {
         <div>
             {
                 authenticated ? <>
+                {/* navigation bar */}
+                    <NavBar />
                     <Outlet />
                 </> : <Navigate to='/login' />
             }
