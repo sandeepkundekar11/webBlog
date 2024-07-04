@@ -47,7 +47,7 @@ export const SignupCall = (userData, Navigate) => {
                 // dispatching
                 Dispatch(join_User(data.user))
                 // navigating to home page if we got data from backend
-                Navigate("/home")
+                Navigate("/")
                 // storing all user data and auth token in to the data base
                 localStorage.setItem("user", JSON.stringify(data.user))
                 localStorage.setItem("token", data.token)
@@ -83,7 +83,7 @@ export const LoginCall = (UserData, Navigate) => {
                 // Dispatching user data function form action
                 Dispatch(join_User(data.user))
                 // navigating to home page if we got data from backend
-                Navigate("/home")
+                Navigate("/")
                  // storing all user data and auth token in to the data base
                 localStorage.setItem("user", JSON.stringify(data.user))
                 localStorage.setItem("token", data.token)

@@ -3,17 +3,42 @@
 @tailwind utilities;
 
 /* styling the container of the signup and login page */
-.containerPage
-{
+.containerPage {
     width: 850px;
     height: 600px;
 }
-.joinUserBox
-{
+
+.joinUserBox {
     background-image: linear-gradient(#355EAD, #AA00FA);
 }
+
 /* styling loader component */
-.loader
-{
+.loader {
     background-color: rgba(128, 128, 128, 0.464);
+}
+
+/* styling home page */
+.blogSearchSection {
+    width: 100%;
+    min-height: 70vh;
+    max-height: 100%;
+    background: url('./Images/Blog-home.png') no-repeat center center/cover;
+}
+
+.sub-blogSearchSection {
+    width: 600px;
+}
+
+.searchInput {
+    width: 600px;
+}
+
+@media (max-width:768px) {
+    .searchInput {
+        width: 300px;
+    }
+
+    .sub-blogSearchSection {
+        width: 300px;
+    }
 }
