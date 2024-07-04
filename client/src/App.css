@@ -42,3 +42,22 @@
         width: 300px;
     }
 }
+
+/* styling the addBlog subContainer */
+.addSubContainer {
+    width: 768px;
+    height: auto;
+    margin: auto;
+}
+.addImg
+{
+    background: url("./Images/addBlog.jpg") no-repeat center center/cover;
+}
+@media (max-width:768px) {
+    .addSubContainer
+    {
+        width: 95%;
+        height: auto;
+        margin: auto;
+    }
+}
