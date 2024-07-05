@@ -8,7 +8,7 @@ const BlogSchema = new mongoose.Schema({
     },
     image: String,
     heading: String,
-    category: [String],
+    categories: [String],
     content: String,
     likes: [{
         type: mongoose.Schema.Types.ObjectId,
