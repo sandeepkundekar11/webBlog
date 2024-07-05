@@ -48,11 +48,6 @@ const Signup = AsyncHandler(async (req, res) => {
             else {
                 res.json({ message: "user already exist" })
             }
-
-
-
-
-
         }
 
     } catch (error) {
