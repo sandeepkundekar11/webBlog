@@ -2,12 +2,18 @@ const dotenv = require("dotenv").config({ path: "./config.env" })
 const express = require("express")
 const cors = require("cors")
 const App = express()
+const path = require("path")
 const { Router } = require("./Routes/AllRoutes")
 const PORT = process.env.PORT
 
+// getting the exact path for the blogUpload 
+const blogFolderPath = path.join(__dirname, "./Storage/blogUploads")
 
 // Use CORS middleware to allow cross-origin requests
 App.use(cors())
+
+// serving the blogUploads folder as static folder where all blog images will be storeds
+App.use(express.static(blogFolderPath))
 
 // Use middleware to parse JSON request bodies
 App.use(express.json())
@@ -17,6 +23,7 @@ App.use("/blog", Router)
 
 App.listen(PORT, () => {
     console.log(`server is running on ${PORT}`)
+    console.log(`blog images will be stored in this path ${blogFolderPath}`)
 })
 
 
