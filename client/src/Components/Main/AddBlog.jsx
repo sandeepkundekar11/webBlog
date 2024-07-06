@@ -1,9 +1,16 @@
 import { useRef, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Select from 'react-select';
 import { blogCategories, customStyles } from '../../Constants';
+import Loader from '../../helperComponents/Loader';
 import uploadImg from "../../Images/Upload-img.png";
+import { addBlogApiCall } from '../../Redux/Actions/AddblogAction';
 const AddBlog = () => {
 
+  const Dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { addBlogLoading, addBlogMessage, addBlogError } = useSelector((state) => state.addBlog)
   const FileRef = useRef(null)
   // blog information state
   const [Blog, setBlog] = useState({
@@ -92,7 +99,7 @@ const AddBlog = () => {
 
     // checking if Blog categories are added or not if not then through the warning
 
-    if (Blog.categories.length < 1) {
+    if (Blog.categories.length < 0) {
       newWarning.CategoryWarning = "Please Enter Atlist one category"
     }
     else {
@@ -100,6 +107,23 @@ const AddBlog = () => {
     }
 
     setBlogWarning(newWarning)
+
+    // checking for all the blog fields conditions 
+
+
+    if (Blog.heading.length > 7 && Blog.content.length > 11 && Blog.categories.length > 0) {
+      // call api
+      let formData = new FormData()
+      formData.append("heading", Blog.heading)
+      let blogCategories=Blog.categories.map((ele)=>ele.value)
+      formData.append("categories", blogCategories)
+      formData.append("blog", Blog.image)
+      formData.append("content", Blog.content)
+
+      Dispatch(addBlogApiCall(formData, navigate))
+    }
+
+
   }
   return <>
     <div className="addBlogContainer pt-20">
@@ -109,7 +133,7 @@ const AddBlog = () => {
         {/* in this blog we are adding blog image and show in one box and that image preview is removed on cancel */}
         <div className="addImg h-40 w-full bg-slate-300 flex flex-col justify-center items-center">
           <button className='w-48 h-10 bg-white relative rounded-lg'>
-            <input type="file" ref={FileRef} onChange={HandleImage} className='absolute w-full h-full left-0  p-0 opacity-0 group' />
+            <input type="file" name='blog' ref={FileRef} onChange={HandleImage} className='absolute w-full h-full left-0  p-0 opacity-0 group' />
             <span className='flex p-2 group-hover:text-white  text-blue-500'>
               <img className='h-7 w-8 ' src={uploadImg} alt="" />
               <p className='font-medium  '>Upload Main Image</p>
@@ -164,7 +188,9 @@ const AddBlog = () => {
         </div>
       </div>
 
-
+      {
+        addBlogLoading && <Loader />
+      }
     </div>
   </>;
 };

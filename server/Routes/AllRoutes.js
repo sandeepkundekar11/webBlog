@@ -5,9 +5,10 @@ const { Middleware } = require("../Controller/Auth");
 const { AddBlogController } = require("../Controller/AddBlogController");
 const multer = require("multer");
 const Router = express.Router();
-
+const fs = require("fs")
 // importing Signup and login controller functions from UserController
 const { Signup, Login } = require("../Controller/UserController");
+const path = require("path");
 
 // connecting to mongodb database
 mongoose
@@ -25,7 +26,15 @@ mongoose
 const blogStore = multer.diskStorage({
   // setting the destination of folder
   destination: (req, file, cb) => {
-    cb(null, "./Storage/blogUploads");
+    // setting the path for the BlogUploads
+    const dirPath = path.join(__dirname, '../Storage/blogUploads');
+    // checking that folder is present or not if not present then create and add the blog img
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true })
+    }
+
+    cb(null, dirPath);
+
   },
   // setting the name of the file
   filename: (req, file, cb) => {
@@ -38,12 +47,15 @@ const blogUpload = multer({
 });
 
 // defining the Signup route  which handles POST request
+// urlhttp://localhost:8000/blog/signup
 Router.post("/signup", Signup);
 
 // defining the login route which handles POST request
+// url http://localhost:8000/blog/login
 Router.post("/login", Login);
 
 // defining the Add blog Route which Handle PUT request
+// url http://localhost:8000/blog/addBlog
 Router.put(
   "/addBlog",
   Middleware,
