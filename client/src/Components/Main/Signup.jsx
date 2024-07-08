@@ -14,7 +14,7 @@ const SignUp = () => {
     // checking if user token is present the navigate home
     let token = localStorage.getItem("token");
     if (token) {
-      Navigate("/home");
+      Navigate("/");
     }
   }, []);
 
