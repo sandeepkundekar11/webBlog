@@ -49,7 +49,7 @@ export const addBlogApiCall = (blog, navigate) => {
                 // dispatching the Add blog action
                 Dispatch(addBlogAction(data.message))
                 // navigating to the home page 
-                navigate("/")
+                navigate("/blog")
             }
         } catch (error) {
             // if any error occurs then dispatching add blog error action
