@@ -1,11 +1,12 @@
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AddBlog from "./Components/Main/AddBlog";
 import Home from "./Components/Main/Home";
 import Login from "./Components/Main/Login";
 import SignUp from "./Components/Main/Signup";
+import ViewBlog from "./Components/Main/ViewBlog";
 import PrivateComponent from "./PrivateComponent";
 import store from "./Redux/Store";
-import AddBlog from "./Components/Main/AddBlog";
 const App = () => {
   return (
     // wrapped with Redux provider
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/" element={<PrivateComponent />}>
             <Route path="/" element={<Home />} />
             <Route path="/addblog" element={<AddBlog />} />
+            <Route path="/blog" element={<ViewBlog />} />
           </Route>
           {/* Protected Wrapper ends */}
 
