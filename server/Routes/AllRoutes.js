@@ -5,10 +5,11 @@ const { Middleware } = require("../Controller/Auth");
 const { AddBlogController } = require("../Controller/AddBlogController");
 const multer = require("multer");
 const Router = express.Router();
-const fs = require("fs")
+const fs = require("fs");
 // importing Signup and login controller functions from UserController
 const { Signup, Login } = require("../Controller/UserController");
 const path = require("path");
+const { LikeDislike } = require("../Controller/LikeDislikeController");
 
 // connecting to mongodb database
 mongoose
@@ -27,14 +28,13 @@ const blogStore = multer.diskStorage({
   // setting the destination of folder
   destination: (req, file, cb) => {
     // setting the path for the BlogUploads
-    const dirPath = path.join(__dirname, '../Storage/blogUploads');
+    const dirPath = path.join(__dirname, "../Storage/blogUploads");
     // checking that folder is present or not if not present then create and add the blog img
     if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true })
+      fs.mkdirSync(dirPath, { recursive: true });
     }
 
     cb(null, dirPath);
-
   },
   // setting the name of the file
   filename: (req, file, cb) => {
@@ -62,5 +62,9 @@ Router.put(
   blogUpload.single("blog"),
   AddBlogController
 );
+
+// defining the Like dislike post route Handle PUT request
+// url http://localhost:8000/blog/likeDislike/{Post_id}
+Router.put("/likeDislike/:id", Middleware, LikeDislike);
 
 module.exports = { Router };
