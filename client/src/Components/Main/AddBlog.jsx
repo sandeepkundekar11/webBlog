@@ -99,7 +99,7 @@ const AddBlog = () => {
 
     // checking if Blog categories are added or not if not then through the warning
 
-    if (Blog.categories.length < 0) {
+    if (Blog.categories.length < 1) {
       newWarning.CategoryWarning = "Please Enter Atlist one category"
     }
     else {
