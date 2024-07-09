@@ -16,7 +16,7 @@ const LikeDislike = AsyncHandler(async (req, res) => {
       let UnlikePost = await BlogModel.updateOne(
         { _id: Blog_id },
         {
-          $pop: {
+          $pull: {
             likes: req.userId,
           },
         }
