@@ -1,5 +1,25 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import SearchImg from "../../Images/SearchBar.png";
+import { GetAllBlogsApiCall } from "../../Redux/Actions/GetAllBlogsAction";
+import Loader from "../../helperComponents/Loader";
 const Home = () => {
+  const Dispatch = useDispatch()
+  // getting all blog loader and Allblogs
+  const { BlogsLoading, Allblogs } = useSelector((state) => state.allBlogs)
+
+  const [blogs, setBlogs] = useState([])
+
+  useEffect(() => {
+    // dispatching GetAllBlog api Function from GetAll blog action file
+    Dispatch(GetAllBlogsApiCall())
+  }, [Dispatch])
+
+  useEffect(() => {
+    // getting and storing in to the setBlogs State
+    console.log(Allblogs)
+    setBlogs(Allblogs)
+  }, [Allblogs])
   return (
     <div className="min-h-screen max-h-full w-screen">
       {/* blog filter section */}
@@ -54,7 +74,21 @@ const Home = () => {
       {/*  All blogs will be displayed here */}
       <div>
         <h1>All Blogs come here</h1>
+        {
+          // mapping all the blogs
+          blogs?.map((ele, index) => {
+            return (
+              <div key={index}>hi</div>
+            )
+          })
+        }
       </div>
+
+
+      {
+        // adding the loader
+        BlogsLoading && <Loader />
+      }
     </div>
   );
 };
