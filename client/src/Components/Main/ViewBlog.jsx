@@ -1,8 +1,15 @@
 // import likeImg from "../../Images/Like.png"
+import { useEffect } from "react"
+import { useParams } from "react-router-dom"
 import CommentImg from "../../Images/Comment.png"
 import ShareImg from "../../Images/share.png"
 import unlikeImg from "../../Images/unLike.png"
 const ViewBlog = () => {
+    const {id}=useParams()
+    useEffect(()=>
+    {
+        console.log(id)
+    },[])
     return (
         <div className="h-full w-full pt-20 pb-10">
             {/* subBlog container */}

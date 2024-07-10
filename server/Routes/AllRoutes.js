@@ -12,6 +12,7 @@ const path = require("path");
 const { LikeDislike } = require("../Controller/LikeDislikeController");
 const { AddComment } = require("../Controller/CommentController");
 const { GetAllBlogs } = require("../Controller/GetAllBlogController");
+const { GetBlog } = require("../Controller/GetBlogController");
 
 // connecting to mongodb database
 mongoose
@@ -76,4 +77,9 @@ Router.put("/comment",Middleware,AddComment)
 // defining the Comment route Handles GET request
 //  url http://localhost:8000/blog/allBlog
 Router.get("/allBlog",Middleware,GetAllBlogs)
+
+
+// defining the get particular blog based on id which handles GET request
+// url http://localhost:8000/blog/getBlog/blogId
+Router.get("/getBlog/:id",Middleware,GetBlog)
 module.exports = { Router };

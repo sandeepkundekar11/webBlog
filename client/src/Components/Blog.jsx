@@ -6,6 +6,7 @@ const Blog = ({
   name,
   Categories = [],
   content = "",
+  ViewBlog
 }) => {
   // user name for dispyling the Profile icon if will appear when we profilesrc will not present
   const [userName, setUserName] = useState();
@@ -21,7 +22,7 @@ const Blog = ({
     // main blog container
     <div className="w-full  p-2 hover:bg-slate-100 rounded-md mt-2 border-2 ">
       {/* getting and Blog title from props and displaying */}
-      <h1 className="text-4xl font-bold p-2">{Title}</h1>
+      <h1 className="text-2xl font-bold p-2">{Title}</h1>
       <div className="BloProfile min-w-48 max-w-full flex items-center p-2">
         {/* getting the profileSrc from props */}
         {/* if profileScr is not present then we will display Fist later of First and last name ex:"Sandeep kundekar" return "SK"  */}
@@ -32,14 +33,14 @@ const Blog = ({
             alt=""
           />
         ) : (
-          <h1 className="w-14 h-14  rounded-full flex justify-center items-center font-medium text-xl bg-orange-700 uppercase">
+          <h1 className="w-14 h-14  rounded-full flex justify-center items-center font-medium text-xl bg-blue-500 uppercase">
             {userName}
           </h1>
         )}
 
         <div className="pl-2">
           {/* getting the name from props and  setting*/}
-          <p className="text-xl">{name} </p>
+          <p className="text-lg font-medium">{name} </p>
           {/* setting Follow ,unFallow button */}
           <button className="bg-blue-600 w-28 p-1 text-white rounded-xl">
             follow
@@ -56,12 +57,12 @@ const Blog = ({
           );
         })}
       </div>
-      <div className="text-xl font-normal p-2">
+      <div className="text-base font-normal p-2">
         {/* displaying the context  */}
         {/* if content is greater then 200 characters then reducing it to 200 characters */}
         {content.substring(0, 200)}{" "}
         {/* see more this button Navigates to View blogpage */}
-        <button className="w-32 text-blue-600 h-auto p-2 bg-transparent hover:bg-slate-200 rounded-2xl">
+        <button className="w-32 text-blue-600 h-auto p-2 bg-transparent hover:bg-slate-200 rounded-2xl" onClick={ViewBlog}>
           See more..
         </button>
       </div>

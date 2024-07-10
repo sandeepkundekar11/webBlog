@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import SearchImg from "../../Images/SearchBar.png";
 import { GetAllBlogsApiCall } from "../../Redux/Actions/GetAllBlogsAction";
 import Loader from "../../helperComponents/Loader";
 import Blog from "../Blog";
 const Home = () => {
   const Dispatch = useDispatch();
+  const Navigate=useNavigate()
   // getting all blog loader and Allblogs
   const { BlogsLoading, Allblogs } = useSelector((state) => state.allBlogs);
 
@@ -83,6 +85,9 @@ const Home = () => {
                 Categories={ele?.categories}
                 content={ele?.content}
                 name={`${ele?.author?.first_name} ${ele?.author?.last_name}`}
+                ViewBlog={()=>{
+                  Navigate(`/viewblog/${ele?._id}`)
+                }}
               />
             );
           })

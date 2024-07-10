@@ -21,7 +21,7 @@ const App = () => {
           <Route path="/" element={<PrivateComponent />}>
             <Route path="/" element={<Home />} />
             <Route path="/addblog" element={<AddBlog />} />
-            <Route path="/blog" element={<ViewBlog />} />
+            <Route path="/viewblog/:id" element={<ViewBlog />} />
           </Route>
           {/* Protected Wrapper ends */}
 
