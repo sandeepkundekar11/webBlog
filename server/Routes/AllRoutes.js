@@ -10,6 +10,8 @@ const fs = require("fs");
 const { Signup, Login } = require("../Controller/UserController");
 const path = require("path");
 const { LikeDislike } = require("../Controller/LikeDislikeController");
+const { AddComment } = require("../Controller/CommentController");
+const { GetAllBlogs } = require("../Controller/GetAllBlogController");
 
 // connecting to mongodb database
 mongoose
@@ -67,4 +69,11 @@ Router.put(
 // url http://localhost:8000/blog/likeDislike/{Post_id}
 Router.put("/likeDislike/:id", Middleware, LikeDislike);
 
+// defining the Comment route Handles PUT request
+//  url http://localhost:8000/blog/comment?id=postId
+Router.put("/comment",Middleware,AddComment)
+
+// defining the Comment route Handles GET request
+//  url http://localhost:8000/blog/allBlog
+Router.get("/allBlog",Middleware,GetAllBlogs)
 module.exports = { Router };

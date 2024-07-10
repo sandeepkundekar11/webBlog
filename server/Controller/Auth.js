@@ -18,8 +18,8 @@ const Middleware = AsyncHandler(async (req, res, next) => {
     let validToken = jwt.verify(token, process.env.SECRET_KEY);
     // if token is valid then setting user id to response id (userId)
     if (validToken) {
-      next();
       req.userId = validToken._id;
+      next();
     } else {
       // if token is invalid then prompt the error message
       res.json({ message: "invalid token " });
