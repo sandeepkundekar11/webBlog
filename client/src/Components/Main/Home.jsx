@@ -3,25 +3,25 @@ import { useDispatch, useSelector } from "react-redux";
 import SearchImg from "../../Images/SearchBar.png";
 import { GetAllBlogsApiCall } from "../../Redux/Actions/GetAllBlogsAction";
 import Loader from "../../helperComponents/Loader";
+import Blog from "../Blog";
 const Home = () => {
-  const Dispatch = useDispatch()
+  const Dispatch = useDispatch();
   // getting all blog loader and Allblogs
-  const { BlogsLoading, Allblogs } = useSelector((state) => state.allBlogs)
+  const { BlogsLoading, Allblogs } = useSelector((state) => state.allBlogs);
 
-  const [blogs, setBlogs] = useState([])
+  const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
     // dispatching GetAllBlog api Function from GetAll blog action file
-    Dispatch(GetAllBlogsApiCall())
-  }, [Dispatch])
+    Dispatch(GetAllBlogsApiCall());
+  }, [Dispatch]);
 
   useEffect(() => {
     // getting and storing in to the setBlogs State
-    console.log(Allblogs)
-    setBlogs(Allblogs)
-  }, [Allblogs])
+    setBlogs(Allblogs);
+  }, [Allblogs]);
   return (
-    <div className="min-h-screen max-h-full w-screen">
+    <div className="min-h-screen max-h-full w-full">
       {/* blog filter section */}
       <div className="blogSearchSection pt-32 flex items-center ">
         {/* start input search and display category container */}
@@ -72,18 +72,22 @@ const Home = () => {
       </div>
 
       {/*  All blogs will be displayed here */}
-      <div>
-        <h1>All Blogs come here</h1>
+      <div className="md:w-4/5 w-full m-auto overflow-y-hidden">
         {
-          // mapping all the blogs
+          // mapping all the blogs and setting the properties
           blogs?.map((ele, index) => {
             return (
-              <div key={index}>hi</div>
-            )
+              <Blog
+                key={index}
+                Title={ele?.heading}
+                Categories={ele?.categories}
+                content={ele?.content}
+                name={`${ele?.author?.first_name} ${ele?.author?.last_name}`}
+              />
+            );
           })
         }
       </div>
-
 
       {
         // adding the loader
