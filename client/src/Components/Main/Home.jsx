@@ -7,7 +7,7 @@ import Loader from "../../helperComponents/Loader";
 import Blog from "../Blog";
 const Home = () => {
   const Dispatch = useDispatch();
-  const Navigate=useNavigate()
+  const Navigate = useNavigate();
   // getting all blog loader and Allblogs
   const { BlogsLoading, Allblogs } = useSelector((state) => state.allBlogs);
 
@@ -74,7 +74,7 @@ const Home = () => {
       </div>
 
       {/*  All blogs will be displayed here */}
-      <div className="md:w-4/5 w-full m-auto overflow-y-hidden">
+      <div className="xl:w-2/4 md:w-4/5 w-full m-auto overflow-y-hidden">
         {
           // mapping all the blogs and setting the properties
           blogs?.map((ele, index) => {
@@ -85,8 +85,8 @@ const Home = () => {
                 Categories={ele?.categories}
                 content={ele?.content}
                 name={`${ele?.author?.first_name} ${ele?.author?.last_name}`}
-                ViewBlog={()=>{
-                  Navigate(`/viewblog/${ele?._id}`)
+                ViewBlog={() => {
+                  Navigate(`/viewblog/${ele?._id}`);
                 }}
               />
             );

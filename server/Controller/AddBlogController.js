@@ -19,10 +19,13 @@ const AddBlogController = asyncHandler(async (req, res) => {
       });
 
       // storing or create new Blog in the data base
+      console.log(image);
       let blog = await BlogModel.create({
         // get the userId from authentication  middleware
         author: req.userId,
-        image: `http://localhost:8000/${req.file.filename}`,
+        image: req.file.filename
+          ? `http://localhost:8000/${req.file.filename}`
+          : null,
         heading,
         content,
         categories: categoriesArr,
@@ -44,6 +47,7 @@ const AddBlogController = asyncHandler(async (req, res) => {
         if (user) {
           res.json({
             message: "Blog added successfully",
+            blog_id: blog._id,
           });
         }
       }

@@ -6,7 +6,7 @@ const Blog = ({
   name,
   Categories = [],
   content = "",
-  ViewBlog
+  ViewBlog,
 }) => {
   // user name for dispyling the Profile icon if will appear when we profilesrc will not present
   const [userName, setUserName] = useState();
@@ -52,7 +52,7 @@ const Blog = ({
         {Categories.map((ele, index) => {
           return (
             <div key={index} className="w-24 p-2 rounded-2xl bg-slate-300 m-2">
-              technology
+              {ele}
             </div>
           );
         })}
@@ -62,7 +62,10 @@ const Blog = ({
         {/* if content is greater then 200 characters then reducing it to 200 characters */}
         {content.substring(0, 200)}{" "}
         {/* see more this button Navigates to View blogpage */}
-        <button className="w-32 text-blue-600 h-auto p-2 bg-transparent hover:bg-slate-200 rounded-2xl" onClick={ViewBlog}>
+        <button
+          className="w-32 text-blue-600 h-auto p-2 bg-transparent hover:bg-slate-200 rounded-2xl"
+          onClick={ViewBlog}
+        >
           See more..
         </button>
       </div>
