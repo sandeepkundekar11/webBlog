@@ -13,6 +13,7 @@ const { LikeDislike } = require("../Controller/LikeDislikeController");
 const { AddComment } = require("../Controller/CommentController");
 const { GetAllBlogs } = require("../Controller/GetAllBlogController");
 const { GetBlog } = require("../Controller/GetBlogController");
+const { GetCommentsAndLikes } = require("../Controller/GetCommentAndLikes");
 
 // connecting to mongodb database
 mongoose
@@ -80,6 +81,13 @@ Router.get("/allBlog",Middleware,GetAllBlogs)
 
 
 // defining the get particular blog based on id which handles GET request
-// url http://localhost:8000/blog/getBlog/blogId
+// url http://localhost:8000/blog/getBlog/{blogId}
 Router.get("/getBlog/:id",Middleware,GetBlog)
+
+
+// defining the get likes and comments route and Handles Get request
+// url http://localhost:8000/blog/getCommentAndLikes/{blogId}
+// if type parameter is "likes" then this api will return only likes 
+// if type parameter is "comments" the this api will return only comments
+Router.get("/getCommentAndLikes/:blogId",Middleware,GetCommentsAndLikes)
 module.exports = { Router };
