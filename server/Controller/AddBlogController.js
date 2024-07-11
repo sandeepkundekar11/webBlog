@@ -19,7 +19,6 @@ const AddBlogController = asyncHandler(async (req, res) => {
       });
 
       // storing or create new Blog in the data base
-      console.log(image);
       let blog = await BlogModel.create({
         // get the userId from authentication  middleware
         author: req.userId,

@@ -7,6 +7,8 @@ const Blog = ({
   Categories = [],
   content = "",
   ViewBlog,
+  isAuthor,
+  userEmail,
 }) => {
   // user name for dispyling the Profile icon if will appear when we profilesrc will not present
   const [userName, setUserName] = useState();
@@ -42,9 +44,14 @@ const Blog = ({
           {/* getting the name from props and  setting*/}
           <p className="text-lg font-medium">{name} </p>
           {/* setting Follow ,unFallow button */}
-          <button className="bg-blue-600 w-28 p-1 text-white rounded-xl">
-            follow
-          </button>
+
+          {JSON.parse(localStorage.getItem("user"))._id === isAuthor ? (
+            <p>{userEmail}</p>
+          ) : (
+            <button className="bg-blue-600 w-28 p-1 text-white rounded-xl">
+              follow
+            </button>
+          )}
         </div>
       </div>
       <div className="flex">

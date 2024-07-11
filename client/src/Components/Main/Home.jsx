@@ -88,10 +88,26 @@ const Home = () => {
                 ViewBlog={() => {
                   Navigate(`/viewblog/${ele?._id}`);
                 }}
+                userEmail={ele?.author.email}
+                isAuthor={ele?.author?._id}
               />
             );
           })
         }
+      </div>
+
+      {/* pagination  container */}
+      <div className="flex xl:w-2/4 md:w-4/5 w-full m-auto overflow-y-hidden mb-12">
+        {[1, 2, 3, 4, 5].map((ele, index) => {
+          return (
+            <div
+              className="w-12 h-12 flex justify-center items-center border m-2 hover:bg-blue-500"
+              key={index}
+            >
+              {ele}
+            </div>
+          );
+        })}
       </div>
 
       {

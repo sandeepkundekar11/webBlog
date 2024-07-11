@@ -1,6 +1,6 @@
 // import likeImg from "../../Images/Like.png"
 import { useEffect, useState } from "react";
-import { json, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import CommentImg from "../../Images/Comment.png";
 import ShareImg from "../../Images/share.png";
 import unlikeImg from "../../Images/unLike.png";
