@@ -1,0 +1,3 @@
+const blogLogic = () => {
+  const checkUser = () => {};
+};

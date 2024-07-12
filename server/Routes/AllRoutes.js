@@ -73,21 +73,19 @@ Router.put("/likeDislike/:id", Middleware, LikeDislike);
 
 // defining the Comment route Handles PUT request
 //  url http://localhost:8000/blog/comment?id=postId
-Router.put("/comment",Middleware,AddComment)
+Router.put("/comment", Middleware, AddComment);
 
 // defining the Comment route Handles GET request
 //  url http://localhost:8000/blog/allBlog
-Router.get("/allBlog",Middleware,GetAllBlogs)
-
+Router.get("/allBlog", Middleware, GetAllBlogs);
 
 // defining the get particular blog based on id which handles GET request
 // url http://localhost:8000/blog/getBlog/{blogId}
-Router.get("/getBlog/:id",Middleware,GetBlog)
-
+Router.get("/getBlog/:id", Middleware, GetBlog);
 
 // defining the get likes and comments route and Handles Get request
 // url http://localhost:8000/blog/getCommentAndLikes/{blogId}
-// if type parameter is "likes" then this api will return only likes 
+// if type parameter is "likes" then this api will return only likes
 // if type parameter is "comments" the this api will return only comments
-Router.get("/getCommentAndLikes/:blogId",Middleware,GetCommentsAndLikes)
+Router.get("/getCommentAndLikes/:blogId", Middleware, GetCommentsAndLikes);
 module.exports = { Router };
