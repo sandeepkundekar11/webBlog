@@ -2,14 +2,17 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import Comment from "../../helperComponents/Comment";
+import Loader from "../../helperComponents/Loader";
 import CommentImg from "../../Images/Comment.png";
 import ShareImg from "../../Images/share.png";
 import unlikeImg from "../../Images/unLike.png";
-import { getBlogByIdApiCall } from "../../Redux/Actions/GetBlogByIdAction";
-import Loader from "../../helperComponents/Loader";
-import Comment from "../../helperComponents/Comment";
+import ToasterLogic from "../../Logic/ToasterLogic";
 import { addCommentApiCall } from "../../Redux/Actions/AddCommentAction";
+import { getBlogByIdApiCall } from "../../Redux/Actions/GetBlogByIdAction";
+import { getAllCommentApiCall } from "../../Redux/Actions/GetCommentsAndLikesAction";
 const ViewBlog = () => {
+  const {successToaster}=ToasterLogic()
   const Dispatch = useDispatch();
   //   blog data
   const { blogLoading, blogData } = useSelector((state) => state.blogById);
@@ -17,21 +20,44 @@ const ViewBlog = () => {
   const { addCommentMessage, addCommentLoading } = useSelector(
     (state) => state.addComment
   );
-
+  //  get all comment of this present blog
+  const { blogComments, blogCommentLoading } = useSelector((state) => state.getBlogComment)
   //   show hiding the comment box
   const [showHideCommentBox, setShowHideCommentBox] = useState(false);
   // state use to toggle the follow and email fileds
   const [PresentUser, setPresentUser] = useState(false);
 
+  //   comment state
+  const [content, setContent] = useState("");
   // this state stores the blog information
   const [viewBlog, setViewBlog] = useState(null);
 
   // getting clicked blog id
   const { id } = useParams();
+
+  // getting all the blog comments
+  useEffect(() => {
+    Dispatch(getAllCommentApiCall(id))
+
+  }, [Dispatch, id])
   useEffect(() => {
     // calling the api getBlogById
     Dispatch(getBlogByIdApiCall(id));
   }, [Dispatch, id]);
+
+  useEffect(() => {
+    // calling get all comment api
+    Dispatch(getAllCommentApiCall(id))
+    // hiding the Add comment box
+    setShowHideCommentBox(false);
+
+    // making empty to content
+    console.log("calling")
+    setContent("");
+    // setting the toaster to notify that comment is been added
+  }, [addCommentMessage])
+
+
 
   //   checking that present user blog or other person blog and also getting the data to state
   useEffect(() => {
@@ -51,17 +77,11 @@ const ViewBlog = () => {
     }
   }, [blogData, viewBlog?.author?._id]);
 
-  //   comment state
-  const [content, setContent] = useState("");
   //   calling the add comment api
   const addComment = () => {
     if (content.length > 2) {
       // call api
-      Dispatch(addCommentApiCall(id, content));
-      setTimeout(() => {
-        setShowHideCommentBox(false);
-        setContent("");
-      }, 1500);
+      Dispatch(addCommentApiCall(id, content,successToaster));
     }
   };
   return (
@@ -191,7 +211,7 @@ const ViewBlog = () => {
 
           {/* show comments container */}
           <div className="w-full">
-            {[1, 2].map((ele, index) => {
+            {blogComments?.map((ele, index) => {
               return <Comment key={index} />;
             })}
           </div>
@@ -200,7 +220,7 @@ const ViewBlog = () => {
         {/* comment section */}
       </div>
       {/* loader */}
-      {(blogLoading || addCommentLoading) && <Loader />}
+      {(blogLoading || addCommentLoading || blogCommentLoading) && <Loader />}
     </div>
   );
 };

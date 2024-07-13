@@ -1,3 +1,0 @@
-const blogLogic = () => {
-  const checkUser = () => {};
-};

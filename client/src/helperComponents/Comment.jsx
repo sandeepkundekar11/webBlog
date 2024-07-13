@@ -32,7 +32,7 @@ const Comment = ({ profileSrc, Name, commentText }) => {
         <img src={ThreeDot} alt="" />
         {/* delete popup */}
         {showDeletePopup && (
-          <div className="shadow-xl mt-3 flex items-center justify-center -ml-20  w-32 h-10 rounded-md border bg-white">
+          <div className="shadow-xl -mt-1 flex items-center justify-center -ml-24  w-32 h-10 rounded-md border bg-white">
             Delete
           </div>
         )}

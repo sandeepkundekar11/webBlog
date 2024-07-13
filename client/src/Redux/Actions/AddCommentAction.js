@@ -24,10 +24,10 @@ const addCommentErrorAction = (err) => {
 
 // calling the Add Comment api
 
-export const addCommentApiCall = (PostId, comment) => {
+export const addCommentApiCall = (PostId, comment,successToaster) => {
   return async (Dispatch) => {
     try {
-      Dispatch(addCommentRequestAction);
+      Dispatch(addCommentRequestAction());
       const token = localStorage.getItem("token");
       let response = await fetch(
         `http://localhost:8000/blog/comment?id=${PostId}`,
@@ -46,6 +46,7 @@ export const addCommentApiCall = (PostId, comment) => {
       let data = await response.json();
       if (data.message) {
         Dispatch(addCommentAction(data.message));
+        successToaster(data.message)
       } else {
         Dispatch(addCommentErrorAction(data.error));
       }

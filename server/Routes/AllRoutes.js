@@ -87,5 +87,5 @@ Router.get("/getBlog/:id", Middleware, GetBlog);
 // url http://localhost:8000/blog/getCommentAndLikes/{blogId}
 // if type parameter is "likes" then this api will return only likes
 // if type parameter is "comments" the this api will return only comments
-Router.get("/getCommentAndLikes/:blogId", Middleware, GetCommentsAndLikes);
+Router.post("/getCommentAndLikes/:blogId", Middleware, GetCommentsAndLikes);
 module.exports = { Router };

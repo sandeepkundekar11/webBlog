@@ -31,12 +31,12 @@ export const getBlogByIdApiCall = (id) => {
         // dispatching the getBlogByIdRequestAction
         Dispatch(getBlogByIdRequestAction())
         // getting token from local storage
-        let toke = localStorage.getItem("token")
+        let token = localStorage.getItem("token")
         try {
             // calling the get  blog by id api
             let response = await fetch(`http://localhost:8000/blog/getBlog/${id}`, {
                 headers: {
-                    "Authorization": `Bearer ${toke}`
+                    "Authorization": `Bearer ${token}`
                 }
             })
 

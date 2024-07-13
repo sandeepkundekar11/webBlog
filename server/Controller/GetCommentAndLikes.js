@@ -18,7 +18,7 @@ const GetCommentsAndLikes = AsyncHandler(async (req, res) => {
                     path: "comments",
                     model: CommentModel
                 })
-                res.json({ comments: comments })
+                res.json({ comments:comments.comments })
             }
         // if  type is "likes" then return only likes
             else if (type === "likes") {
