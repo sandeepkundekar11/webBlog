@@ -1,19 +1,36 @@
-// import likeImg from "../../Images/Like.png"
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Comment from "../../helperComponents/Comment";
 import Loader from "../../helperComponents/Loader";
 import CommentImg from "../../Images/Comment.png";
+import likeImg from "../../Images/Like.png";
 import ShareImg from "../../Images/share.png";
 import unlikeImg from "../../Images/unLike.png";
 import ToasterLogic from "../../Logic/ToasterLogic";
+import IframeLogic from "../../Logic/UserLogic";
 import { addCommentApiCall } from "../../Redux/Actions/AddCommentAction";
+import { getLikesApiCall } from "../../Redux/Actions/AddLikeAction";
 import { getBlogByIdApiCall } from "../../Redux/Actions/GetBlogByIdAction";
-import { getAllCommentApiCall } from "../../Redux/Actions/GetCommentsAndLikesAction";
+import { getAllCommentApiCall, GetAllLikesApiCall } from "../../Redux/Actions/GetCommentsAndLikesAction";
 const ViewBlog = () => {
-  const {successToaster}=ToasterLogic()
+
+  const [userId, setUserId] = useState()
+  useEffect(() => {
+    let id = JSON.parse(localStorage.getItem("user"))._id
+    setUserId(id)
+  }, [])
+  const { GetIframeColor, GetUserIcon } = IframeLogic()
+  const { successToaster } = ToasterLogic()
   const Dispatch = useDispatch();
+  // it sets how many number of comments should be visible if it 2 then only two comments will be visible
+  const [commentCoutToShow, setCommentCountToShow] = useState(1)
+  // profile name if author is profile is not available
+  const [IframeName, setIframeName] = useState()
+
+  // profile color
+  const [IframeColor, setIframColor] = useState()
+
   //   blog data
   const { blogLoading, blogData } = useSelector((state) => state.blogById);
   //   add comment data
@@ -22,6 +39,16 @@ const ViewBlog = () => {
   );
   //  get all comment of this present blog
   const { blogComments, blogCommentLoading } = useSelector((state) => state.getBlogComment)
+
+  // Likes data
+  const { likesMessage, likesLoading } = useSelector((state) => state.addLikes)
+  // like of the blog state
+  const [likes, setLikes] = useState([])
+
+  // get all likes of this present blog
+  const { blogLikes, blogLikesLoading } = useSelector((state) => state.getBlogLikes)
+  // state to store the  blogcomments
+  const [comments, setComments] = useState([])
   //   show hiding the comment box
   const [showHideCommentBox, setShowHideCommentBox] = useState(false);
   // state use to toggle the follow and email fileds
@@ -35,29 +62,50 @@ const ViewBlog = () => {
   // getting clicked blog id
   const { id } = useParams();
 
-  // getting all the blog comments
-  useEffect(() => {
-    Dispatch(getAllCommentApiCall(id))
 
-  }, [Dispatch, id])
   useEffect(() => {
+    // getting all the blog comments
+    Dispatch(getAllCommentApiCall(id))
     // calling the api getBlogById
     Dispatch(getBlogByIdApiCall(id));
-  }, [Dispatch, id]);
+
+
+  }, [Dispatch, id])
+
 
   useEffect(() => {
-    // calling get all comment api
+    // here we are rotating the comments array so that alway user will see lateast comments
+    let RotatedArr = []
+    for (let i = blogComments?.length - 1; i >= 0; i--) {
+      RotatedArr.push(blogComments[i])
+    }
+    setComments(RotatedArr)
+  }, [blogComments])
+
+
+  useEffect(() => {
+    // getting the blog author information
+    let Author = blogData?.author
+    // getting the user full name
+    let name = `${Author?.first_name} ${Author?.last_name}`
+
+    // setting the Profile icons
+    setIframeName(GetUserIcon(name))
+    // setting the Profile color
+    setIframColor(GetIframeColor(name[0]))
+
+
+  }, [blogData])
+
+  useEffect(() => {
+    // when our add comment api is called then that time calling get all comment api
     Dispatch(getAllCommentApiCall(id))
     // hiding the Add comment box
     setShowHideCommentBox(false);
 
     // making empty to content
-    console.log("calling")
     setContent("");
-    // setting the toaster to notify that comment is been added
   }, [addCommentMessage])
-
-
 
   //   checking that present user blog or other person blog and also getting the data to state
   useEffect(() => {
@@ -77,13 +125,39 @@ const ViewBlog = () => {
     }
   }, [blogData, viewBlog?.author?._id]);
 
+
+
   //   calling the add comment api
+
+  useEffect(() => {
+    // getting all blog likes
+    // when our like api is called that time again get all likes api is called
+    Dispatch(GetAllLikesApiCall(id))
+  }, [likesMessage])
+
+  useEffect(() => {
+    // setting the Like blog state
+    setLikes(blogLikes)
+  }, [blogLikes])
+
   const addComment = () => {
     if (content.length > 2) {
       // call api
-      Dispatch(addCommentApiCall(id, content,successToaster));
+      Dispatch(addCommentApiCall(id, content, successToaster));
     }
   };
+
+
+  // add like section 
+
+  const onLikeDisLike = () => {
+    // calling the Like dislike api
+    Dispatch(getLikesApiCall(id, successToaster))
+    // getting all blog likes
+    Dispatch(GetAllLikesApiCall(id))
+  }
+
+
   return (
     <div className="h-full w-full pt-20 pb-10">
       {/* subBlog container */}
@@ -96,7 +170,14 @@ const ViewBlog = () => {
         {/* blog profile */}
         <div className="blogProfile flex mt-3 items-center">
           {/* profile pic */}
-          <img className="w-16 h-16 bg-slate-500 rounded-full" src="" alt="" />
+
+          {
+            blogData?.author?.profile ?
+              <img className="w-16 h-16 bg-slate-500 rounded-full" src="" alt="" /> :
+              <h1 style={{ backgroundColor: IframeColor }} className="w-14 h-14  rounded-full flex justify-center items-center font-medium text-xl  uppercase">
+                {IframeName}
+              </h1>
+          }
           {/* profile info start*/}
           {/* if we are seeing others blog then name and fallow button will be visible */}
           {/* if we are seeing personal blog then name and Email will be visible */}
@@ -149,8 +230,17 @@ const ViewBlog = () => {
         <div className="flex w-full border-t-2 mt-4 border-b-2 py-2 ">
           <div className="sm:w-96 w-full flex justify-between">
             {/* like dislike button */}
-            <button className="w-12 h-12 hover:bg-slate-100 p-2 rounded-full">
-              <img src={unlikeImg} alt="" />
+            <button className="w-12 h-12 hover:bg-slate-100 p-2 rounded-full" onClick={onLikeDisLike}>
+              {/* {
+                Likes
+              } */}
+
+              {likes?.some((ele) => ele._id === userId) ?
+                <img src={likeImg} alt="" /> :
+                <img src={unlikeImg} alt="" />}
+              {/* <img src={unlikeImg} alt="" /> */}
+              <p className="-mt-2">{likes?.length}</p>
+              {/* <img src={likeImg} alt="" /> */}
             </button>
             {/* comment button */}
             <button
@@ -159,7 +249,7 @@ const ViewBlog = () => {
               onClick={() => setShowHideCommentBox(!showHideCommentBox)}
             >
               <img src={CommentImg} alt="" />
-              <p className="-mt-2">5</p>
+              <p className="-mt-2">{blogComments?.length}</p>
             </button>
 
             {/* share button */}
@@ -210,17 +300,48 @@ const ViewBlog = () => {
           )}
 
           {/* show comments container */}
-          <div className="w-full">
-            {blogComments?.map((ele, index) => {
-              return <Comment key={index} />;
+          <p className="font-medium text-2xl">Comments ({blogComments?.length}) :</p>
+          <div className="w-full flex flex-col">
+            {comments?.map((ele, index) => {
+
+              if (index + 1 <= commentCoutToShow) {
+                return <Comment key={index}
+                  Name={`${ele?.author.first_name} ${ele?.author.last_name}`}
+                  commentText={ele?.content} />;
+              }
+
             })}
           </div>
+
+          {/* show more comment button */}
+          {
+            // this button will be visible when comments length is more then 2 
+            blogComments?.length > 1 &&
+            <button className="w-full h-10 bg-gray-200 hover:bg-gray-300 mt-4 rounded-lg" onClick={() => {
+              // normally only one comment should be visible
+              // when we click on show more then all blogs should be visible
+              // and again if click on read less  then again show only 1 blog
+              if (commentCoutToShow <= 1) {
+                // showing all blogs
+                setCommentCountToShow(blogComments?.length)
+              }
+              else {
+                // showing only 1 blog
+                setCommentCountToShow(1)
+              }
+            }
+            }>
+              {
+                commentCoutToShow < 2 ? "Read More.." : "Read less"
+              }
+            </button>
+          }
         </div>
 
         {/* comment section */}
       </div>
       {/* loader */}
-      {(blogLoading || addCommentLoading || blogCommentLoading) && <Loader />}
+      {(blogLoading || addCommentLoading || blogCommentLoading || likesLoading || blogLikesLoading) && <Loader />}
     </div>
   );
 };

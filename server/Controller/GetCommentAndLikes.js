@@ -16,18 +16,22 @@ const GetCommentsAndLikes = AsyncHandler(async (req, res) => {
             if (type === "comments") {
                 let comments = await BlogModel.findOne({ _id: req.params.blogId }, "comments").populate({
                     path: "comments",
-                    model: CommentModel
+                    model: CommentModel,
+                    populate:{
+                        path:"author",
+                        model:userModel
+                    }
                 })
                 res.json({ comments:comments.comments })
             }
         // if  type is "likes" then return only likes
-            else if (type === "likes") {
+             else if (type === "likes") {
                 let likes = await BlogModel.findOne({ _id: req.params.blogId }, "likes").populate({
                     path: "likes",
                     model: userModel
                 })
 
-                res.json({ likes: likes })
+                res.json({ likes: likes.likes })
             }
             //  if type is other then "comments" and "likes" then this error will prompted
             else

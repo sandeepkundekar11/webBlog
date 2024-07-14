@@ -25,6 +25,7 @@ const AddComment = AsyncHandler(async (req, res) => {
             $push: { comments: comment._id },
           }
         );
+        
         if (blog) {
           // success message
           res.json({ message: "Commented successfully" });

@@ -1,9 +1,11 @@
 import { NavLink, useNavigate } from "react-router-dom";
 
 const NavBar = ({ path }) => {
+
+  
   const Navigate = useNavigate();
   return (
-    <div className="w-screen h-16 flex justify-between px-2 bg-gray-200 fixed top-0 items-center">
+    <div className="w-screen h-16 flex justify-between px-2 bg-gray-300 shadow-lg z-30 fixed top-0 items-center">
       {/* Logo */}
       <div
         className="text-2xl font-extrabold text-blue-500 cursor-pointer"
