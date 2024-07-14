@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import NavBar from "./Components/NavBar";
 
 const PrivateComponent = () => {
@@ -36,6 +38,17 @@ const PrivateComponent = () => {
           {/* navigation bar */}
           <NavBar path={path} />
           <Outlet />
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"/>
         </>
       ) : (
         // if user is not authenticated then Directaly Navigate to Login page to login the user
