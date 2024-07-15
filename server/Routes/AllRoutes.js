@@ -14,6 +14,8 @@ const { AddComment } = require("../Controller/CommentController");
 const { GetAllBlogs } = require("../Controller/GetAllBlogController");
 const { GetBlog } = require("../Controller/GetBlogController");
 const { GetCommentsAndLikes } = require("../Controller/GetCommentAndLikes");
+const { GetprofileInfo } = require("../Controller/GetProfileController");
+const { DeleteBlog } = require("../Controller/DeleteBlogController");
 
 // connecting to mongodb database
 mongoose
@@ -88,4 +90,13 @@ Router.get("/getBlog/:id", Middleware, GetBlog);
 // if type parameter is "likes" then this api will return only likes
 // if type parameter is "comments" the this api will return only comments
 Router.post("/getCommentAndLikes/:blogId", Middleware, GetCommentsAndLikes);
+
+// defining the Get profile info route which handles GET request
+// url http://localhost:8000/blog/getProfile
+Router.get("/getProfile", Middleware, GetprofileInfo);
+
+// Defining the Delete blog route which handles Delete request
+// url http://localhost:8000/blog/deleteBlog/{blogid}
+
+Router.delete("/deleteBlog/:blogId", Middleware, DeleteBlog);
 module.exports = { Router };
