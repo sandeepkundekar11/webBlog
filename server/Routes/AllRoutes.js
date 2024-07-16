@@ -16,6 +16,7 @@ const { GetBlog } = require("../Controller/GetBlogController");
 const { GetCommentsAndLikes } = require("../Controller/GetCommentAndLikes");
 const { GetprofileInfo } = require("../Controller/GetProfileController");
 const { DeleteBlog } = require("../Controller/DeleteBlogController");
+const { UpdateProfile } = require("../Controller/UpdateProfileController");
 
 // connecting to mongodb database
 mongoose
@@ -50,6 +51,25 @@ const blogStore = multer.diskStorage({
 
 const blogUpload = multer({
   storage: blogStore,
+});
+
+// defining the multer for the adding post
+let profileStore = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dirPath = path.join(__dirname, "../Storage/Profiles");
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });
+    }
+    cb(null, dirPath);
+  },
+
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}_${file.originalname}`);
+  },
+});
+
+const profileUpload = multer({
+  storage: profileStore,
 });
 
 // defining the Signup route  which handles POST request
@@ -97,6 +117,14 @@ Router.get("/getProfile", Middleware, GetprofileInfo);
 
 // Defining the Delete blog route which handles Delete request
 // url http://localhost:8000/blog/deleteBlog/{blogid}
-
 Router.delete("/deleteBlog/:blogId", Middleware, DeleteBlog);
+
+// Definging the update profile which handles PUT request
+// url http://localhost:8000/blog/updeteProfile
+Router.put(
+  "/updeteProfile",
+  Middleware,
+  profileUpload.single("profile"),
+  UpdateProfile
+);
 module.exports = { Router };
