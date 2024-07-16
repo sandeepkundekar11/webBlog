@@ -22,7 +22,7 @@ const AddBlogController = asyncHandler(async (req, res) => {
       let blog = await BlogModel.create({
         // get the userId from authentication  middleware
         author: req.userId,
-        image: req.file.filename
+        image: req?.file?.filename
           ? `http://localhost:8000/${req.file.filename}`
           : null,
         heading,
