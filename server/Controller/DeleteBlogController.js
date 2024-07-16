@@ -55,7 +55,7 @@ const DeleteBlog = AsyncHandler(async (req, res) => {
 
       // deleting that blog from  BlogModel
       let DeletedBlog = await BlogModel.deleteOne({ _id: BlogId });
-      res.json({ message: "blog deleted succesfully" });
+      res.json({ message: "blog deleted successfully" });
     } else {
       res.json({
         message: "User is not authorized to delete this blog",

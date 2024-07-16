@@ -4,6 +4,7 @@ import { AddBlogReducer } from "./Reducers/AddBlogReducer";
 import { GetBlogCommentsReducer, GetBlogsLikesReducer } from "./Reducers/AddCommentAndLikeReducer";
 import { addCommentReducer } from "./Reducers/AddCommentReducer";
 import { AddLikesReducer } from "./Reducers/AddLikesReducer";
+import { DeleBlogReducer } from "./Reducers/DeleteBlogReducer";
 import { GetAllblogsReducer } from "./Reducers/GetAllBlogAction";
 import { GetBlogByIdReducer } from "./Reducers/GetBlogByIdReducer";
 import { GetProfileReducer } from "./Reducers/UserProfileReducer";
@@ -18,7 +19,8 @@ const rootStore = combineReducers({
   getBlogComment: GetBlogCommentsReducer,
   getBlogLikes: GetBlogsLikesReducer,
   addLikes: AddLikesReducer,
-  UserInfo:GetProfileReducer
+  UserInfo:GetProfileReducer,
+  deleteBlog:DeleBlogReducer
 });
 
 const store = createStore(rootStore, applyMiddleware(thunk));
