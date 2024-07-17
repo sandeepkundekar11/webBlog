@@ -16,10 +16,10 @@ const Profile = () => {
 
   //   profile info state
   const [ProfileInfo, setProfileInfo] = useState();
-  //   profle iFrame color
+  //   profile iFrame color
   const [ProfileColor, setProfileColor] = useState();
-  //   profle iframe
-  const [ProfileIframe, setProfileInframe] = useState();
+  //   profile iframe
+  const [ProfileIframe, setProfileIframe] = useState();
 
   useEffect(() => {
     // calling the get profile api
@@ -30,7 +30,7 @@ const Profile = () => {
     setProfileInfo(ProfileData);
     let name = `${ProfileData?.first_name} ${ProfileData?.last_name}`;
     // setting the Iframe of the profile if profile src is not availabe
-    setProfileInframe(GetUserIcon(name));
+    setProfileIframe(GetUserIcon(name));
     // setting the Profile iFrame color
     setProfileColor(GetIframeColor(name[0]));
   }, [ProfileData]);
@@ -106,7 +106,13 @@ const Profile = () => {
       {ProfileLoading && <Loader />}
 
       {/* update profile popup */}
-      <UpdateProfilePopup />
+      <UpdateProfilePopup profileData={{
+        profileSrc: ProfileData?.profileSrc,
+        first_name: ProfileData?.first_name,
+        last_name: ProfileData?.last_name,
+        email: ProfileData?.email,
+        boi: ProfileData?.boi
+      }} />
     </div>
   );
 };
