@@ -90,7 +90,7 @@ const Home = () => {
                 }}
                 userEmail={ele?.author.email}
                 isAuthor={ele?.author?._id}
-                profileSrc={ele?.author?.profleSrc}
+                profileSrc={ele?.author?.profileSrc}
               />
             );
           })

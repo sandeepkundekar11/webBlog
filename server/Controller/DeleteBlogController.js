@@ -21,16 +21,18 @@ const DeleteBlog = AsyncHandler(async (req, res) => {
       // removing that Image of that from file system
 
       let blog = await BlogModel.findOne({ _id: BlogId }); //gettig that blog
-      let ImageName = blog.image.split("/")[3]; // separating that imageName from url http://localhost:8000/{imageName}
-      let imagePath = path.join(
-        __dirname,
-        `../Storage/blogUploads/${ImageName}`
-      ); // getting that perticular image path
-      console.log(imagePath);
-      try {
-        fs.unlinkSync(imagePath); // deleting that image
-      } catch (error) {
-        return res.status(500).json({ message: "Error deleting image" });
+      if (blog.image) {
+        let ImageName = blog.image?.split("/")[3]; // separating that imageName from url http://localhost:8000/{imageName}
+        let imagePath = path.join(
+          __dirname,
+          `../Storage/blogUploads/${ImageName}`
+        ); // getting that perticular image path
+        console.log(imagePath);
+        try {
+          fs.unlinkSync(imagePath); // deleting that image
+        } catch (error) {
+          return res.status(500).json({ message: "Error deleting image" });
+        }
       }
 
       // removing all the comment which we have commented on blog to be deleted

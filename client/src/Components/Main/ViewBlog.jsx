@@ -19,8 +19,7 @@ import {
 } from "../../Redux/Actions/GetCommentsAndLikesAction";
 import ManageBlogPopup from "../ManageBlogPopup";
 const ViewBlog = () => {
-
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [userId, setUserId] = useState();
   useEffect(() => {
     let id = JSON.parse(localStorage.getItem("user"))._id;
@@ -157,10 +156,11 @@ const ViewBlog = () => {
     Dispatch(GetAllLikesApiCall(id));
   };
 
-
   // manage blog popup logic
-  const [openManagePopup, setOpenManagePopup] = useState(false)
-  const { DeletedBlogMessage, DeleteBlogLoading } = useSelector((state) => state.deleteBlog)
+  const [openManagePopup, setOpenManagePopup] = useState(false);
+  const { DeletedBlogMessage, DeleteBlogLoading } = useSelector(
+    (state) => state.deleteBlog
+  );
 
   return (
     <div className="h-full w-full pt-20 pb-10">
@@ -175,10 +175,10 @@ const ViewBlog = () => {
         <div className="blogProfile flex mt-3 items-center">
           {/* profile pic */}
 
-          {blogData?.author?.profleSrc ? (
+          {blogData?.author?.profileSrc !== "null" ? (
             <img
-              className="w-16 h-16 bg-slate-500 rounded-full"
-              src={blogData?.author?.profleSrc}
+              className="w-16 h-16 bg-slate-500 rounded-full border"
+              src={blogData?.author?.profileSrc}
               alt=""
             />
           ) : (
@@ -209,9 +209,16 @@ const ViewBlog = () => {
         </div>
         {
           // only the author of the blog only can delete or edit the post
-          PresentUser && <div className="flex justify-end">
-            <button className="w-28 h-8 text-white bg-blue-500 hover:bg-blue-600 rounded-md shadow-lg" onClick={() => setOpenManagePopup(true)}>Manage</button>
-          </div>
+          PresentUser && (
+            <div className="flex justify-end">
+              <button
+                className="w-28 h-8 text-white bg-blue-500 hover:bg-blue-600 rounded-md shadow-lg"
+                onClick={() => setOpenManagePopup(true)}
+              >
+                Manage
+              </button>
+            </div>
+          )
         }
 
         {/* profile Image */}
@@ -367,21 +374,22 @@ const ViewBlog = () => {
         addCommentLoading ||
         blogCommentLoading ||
         likesLoading ||
-        blogLikesLoading || DeleteBlogLoading) && <Loader />}
-
+        blogLikesLoading ||
+        DeleteBlogLoading) && <Loader />}
 
       {/* popup display */}
       {/* manage popup for managing the blog like delete the blog or update the blog */}
-      {
-        openManagePopup && <ManageBlogPopup onCancel={() => {
-          setOpenManagePopup(false)
-        }} onDelete={() => {
-          Dispatch(DeleteBlogApiCall(id,navigate))
-
-        }} onUpdate={() => {
-
-        }} />
-      }
+      {openManagePopup && (
+        <ManageBlogPopup
+          onCancel={() => {
+            setOpenManagePopup(false);
+          }}
+          onDelete={() => {
+            Dispatch(DeleteBlogApiCall(id, navigate));
+          }}
+          onUpdate={() => {}}
+        />
+      )}
     </div>
   );
 };

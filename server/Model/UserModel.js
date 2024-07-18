@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 // creating the user Schema
 
 const userSchema = new mongoose.Schema({
-  profleSrc: {
+  profileSrc: {
     type: String,
   },
   first_name: {
