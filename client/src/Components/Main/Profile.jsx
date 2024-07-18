@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../helperComponents/Loader";
 import ProfleBlog from "../../helperComponents/ProfleBlog";
+import ToasterLogic from "../../Logic/ToasterLogic";
 import UserLogic from "../../Logic/UserLogic";
+import { updateProfileApiCall } from "../../Redux/Actions/UpdateProfileAction";
 import { GetUserInfoApiCall } from "../../Redux/Actions/UserProfileAction";
 import UpdateProfilePopup from "../UpdateprofilePopup";
-import { updateProfileApiCall } from "../../Redux/Actions/UpdateProfileAction";
-import ToasterLogic from "../../Logic/ToasterLogic";
 const Profile = () => {
   // update profile message
   const { UpdateProfileMessage, UpdateProfileLoading } = useSelector(
@@ -97,7 +97,7 @@ const Profile = () => {
             </button>
           </div>
           <div>
-            {ProfileInfo?.profileSrc !== "null" ? (
+            {ProfileInfo?.profileSrc ? (
               <img
                 className="w-24 h-24 rounded-md bg-slate-500"
                 src={ProfileInfo?.profileSrc}

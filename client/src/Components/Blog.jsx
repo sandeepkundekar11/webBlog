@@ -29,7 +29,7 @@ const Blog = ({
       <div className="BloProfile min-w-48 max-w-full flex items-center p-2">
         {/* getting the profileSrc from props */}
         {/* if profileScr is not present then we will display Fist later of First and last name ex:"Sandeep kundekar" return "SK"  */}
-        {profileSrc !== "null" ? (
+        {profileSrc ?(
           <img
             className="w-14 h-14 bg-slate-300 rounded-full"
             src={profileSrc}

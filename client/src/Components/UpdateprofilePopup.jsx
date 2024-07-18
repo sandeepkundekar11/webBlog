@@ -62,7 +62,7 @@ const UpdateProfilePopup = ({ profileData, Update, cancel }) => {
           {/* update profile image */}
           <div className="image w-2/4 flex justify-center">
             {/* profile image */}
-            {updateProfileData?.profileSrc !== "null" || null ? (
+            {updateProfileData?.profileSrc? (
               <img
                 ref={ProfileRef}
                 className="w-32 h-32 bg-slate-500 rounded-lg"
@@ -89,7 +89,7 @@ const UpdateProfilePopup = ({ profileData, Update, cancel }) => {
                 onChange={uploadProfile}
               />
             </button>
-            {updateProfileData?.profileSrc !== "null" && (
+            {updateProfileData?.profileSrc && (
               <button
                 className="w-36 rounded-3xl shadow-md h-10 hover:border-2 hover:border-red-500 border-gray-700 border mt-4"
                 onClick={() => {

@@ -20,7 +20,7 @@ import {
 import ManageBlogPopup from "../ManageBlogPopup";
 const ViewBlog = () => {
   const navigate = useNavigate();
-  const [userId, setUserId] = useState();
+  const [userId , setUserId] = useState();
   useEffect(() => {
     let id = JSON.parse(localStorage.getItem("user"))._id;
     setUserId(id);
@@ -175,7 +175,7 @@ const ViewBlog = () => {
         <div className="blogProfile flex mt-3 items-center">
           {/* profile pic */}
 
-          {blogData?.author?.profileSrc !== "null" ? (
+          {blogData?.author?.profileSrc ? (
             <img
               className="w-16 h-16 bg-slate-500 rounded-full border"
               src={blogData?.author?.profileSrc}
@@ -193,7 +193,7 @@ const ViewBlog = () => {
           {/* if we are seeing others blog then name and fallow button will be visible */}
           {/* if we are seeing personal blog then name and Email will be visible */}
           <div className=" ml-3">
-            <h1 className="text-xl font-medium">{`${viewBlog?.author?.first_name} ${viewBlog?.author?.last_name}`}</h1>
+            <h1 className="text-xl font-medium">{`${viewBlog?.author?.first_name} ${viewBlog?.author?.last_name}`} {PresentUser && `(Me)`}</h1>
 
             {/* toggling the follow button and email filed */}
             {PresentUser ? (
@@ -334,8 +334,9 @@ const ViewBlog = () => {
                 return (
                   <Comment
                     key={index}
-                    Name={`${ele?.author.first_name} ${ele?.author.last_name}`}
+                    Name={`${ele?.author.first_name} ${ele?.author.last_name} ${ele?.author?._id===userId ?"(Me)":""}`}
                     commentText={ele?.content}
+                    profileSrc={ele?.author?.profileSrc}
                   />
                 );
               }
