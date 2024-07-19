@@ -15,21 +15,48 @@ const UpdateProfile = AsyncHandler(async (req, res) => {
       ? `http://localhost:8000/${req.file.filename}`
       : profile;
 
-    // If profile is null, empty, or the string 'null', update profileSrc to null
+    // when we are upading the image that time till will remove previous image if it is present
+    if (presentUser.profileSrc !== profileSrc && presentUser.profileSrc) {
+      let imagePath = presentUser.profileSrc.split("/")[3];
+      let imagefilePath = path.join(
+        __dirname,
+        `../Storage/Profiles/${imagePath}`
+      );
+      console.log(imagePath);
+      try {
+        fs.unlinkSync(imagefilePath);
+      } catch (error) {
+        return res.json({ message: error.message });
+      }
+    }
+
     if (profile === null || profile === "" || profile === "null") {
+      // If profile is null, empty, or the string 'null', update profileSrc to null
       await userModel.updateOne(
         { _id: req.userId },
         { $set: { profileSrc: null } }
       );
-      
+
       // If there's an old profile image, delete it
-      if (presentUser.profileSrc) {
+      if (
+        presentUser.profileSrc &&
+        fs.existsSync(
+          path.join(
+            __dirname,
+            `../Storage/Profiles/${presentUser?.profileSrc?.split("/")[3]}`
+          )
+        )
+      ) {
         let ProfileImageToBeDelete = presentUser.profileSrc.split("/")[3];
-        let FilePath = path.join(__dirname, `../Storage/Profiles/${ProfileImageToBeDelete}`);
+        let FilePath = path.join(
+          __dirname,
+          `../Storage/Profiles/${ProfileImageToBeDelete}`
+        );
         console.log(ProfileImageToBeDelete);
         try {
           fs.unlinkSync(FilePath);
         } catch (error) {
+          console.log(error);
           return res.json({ message: error.message });
         }
       }
@@ -44,7 +71,10 @@ const UpdateProfile = AsyncHandler(async (req, res) => {
           last_name,
           bio,
           email,
-          profileSrc: profile === null || profile === "" || profile === "null" ? null : profileSrc,
+          profileSrc:
+            profile === null || profile === "" || profile === "null"
+              ? null
+              : profileSrc,
         },
       }
     );
@@ -57,8 +87,6 @@ const UpdateProfile = AsyncHandler(async (req, res) => {
   } catch (error) {
     res.json({ message: error.message });
   }
-
-
 });
 
 module.exports = { UpdateProfile };

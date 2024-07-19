@@ -121,18 +121,37 @@ const Profile = () => {
             My Posts
           </h1>
           <div className="mt-4 flex flex-wrap">
-            {ProfileData?.blogs?.map((ele, index) => {
-              return (
-                <ProfleBlog
-                  key={index}
-                  heading={ele?.heading}
-                  content={ele?.content}
-                  viewBlog={() => {
-                    Navigate(`/viewblog/${ele._id}`);
+            {ProfileData?.blogs.length > 0 ? (
+              ProfileData?.blogs?.map((ele, index) => {
+                return (
+                  <ProfleBlog
+                    key={index}
+                    heading={ele?.heading}
+                    content={ele?.content}
+                    viewBlog={() => {
+                      Navigate(`/viewblog/${ele._id}`);
+                    }}
+                    imageSrc={ele?.image}
+                    commentCount={ele?.comments.length}
+                    likeCount={ele?.likes.length}
+                  />
+                );
+              })
+            ) : (
+              <div className="m-auto">
+                <h1 className="text-center text-gray-700 text-2xl font-bold ">
+                  No Blogs Available
+                </h1>
+                <button
+                  className="text-lg font-medium text-white bg-blue-500 rounded-md shadow-md w-32 h-9 mt-4 m-auto hover:bg-blue-600"
+                  onClick={() => {
+                    Navigate("/addblog");
                   }}
-                />
-              );
-            })}
+                >
+                  Add Blog
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
