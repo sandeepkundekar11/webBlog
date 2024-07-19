@@ -17,6 +17,7 @@ const { GetCommentsAndLikes } = require("../Controller/GetCommentAndLikes");
 const { GetprofileInfo } = require("../Controller/GetProfileController");
 const { DeleteBlog } = require("../Controller/DeleteBlogController");
 const { UpdateProfile } = require("../Controller/UpdateProfileController");
+const { FollowUnFollow } = require("../Controller/FollowAndUnfollowController");
 
 // connecting to mongodb database
 mongoose
@@ -127,4 +128,11 @@ Router.put(
   profileUpload.single("profile"),
   UpdateProfile
 );
+
+
+// Defining the Follow and unfollow which handles PUT request
+// url http://localhost:8000/blog/followAndUnfollow/:followerId/:userId
+// followerId="id of user who is going follow"
+// userId ="id of user to whom follower is going to follow"
+Router.put("/followAndUnfollow/:followerId/:userId",Middleware,FollowUnFollow)
 module.exports = { Router };

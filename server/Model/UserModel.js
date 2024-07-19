@@ -25,6 +25,19 @@ const userSchema = new mongoose.Schema({
       ref: "BlogModel", // refers blog model name "BlogModel"
     },
   ],
+  followings: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "userModel"
+    }
+  ],
+
+  followers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "userModel"
+    }
+  ]
 });
 
 // creating the user model

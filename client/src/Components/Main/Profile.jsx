@@ -71,7 +71,30 @@ const Profile = () => {
         {/* profile section */}
         <div className="w-full pt-3 flex sm:flex-row flex-col-reverse ">
           <div className="w-full">
-            <div className="flex font-medium text-lg name text-gray-600">
+            {/* profile Follow Unfollow section */}
+
+            <div className="followSection w-4/5 flex flex-col justify-center">
+              <div className="followUnfollowSection flex justify-between">
+                {/* total posts */}
+                <div className="w-24 h-16 flex flex-col justify-center items-center">
+                  <p className=" text-lg font-semibold">4</p>
+                  <p className=" text-lg font-semibold">Posts</p>
+                </div>
+                {/* Total Followers */}
+                <div className="w-24 h-16 flex flex-col justify-center items-center">
+                  <p className=" text-lg font-semibold">10</p>
+                  <p className=" text-lg font-semibold">Followers</p>
+                </div>
+                {/* total following  */}
+                <div className="w-24 h-16 flex flex-col justify-center items-center">
+                  <p className=" text-lg font-semibold">5</p>
+                  <p className=" text-lg font-semibold">Following</p>
+                </div>
+              </div>
+              <button className="followButton  w-full m-auto bg-blue-500 rounded-md shadow-md h-9 mt-4">Follow</button>
+            </div>
+            {/* profile info */}
+            <div className="flex font-medium text-lg name text-gray-600 mt-4">
               <h1 className="text-black font-medium">Name :</h1>
               <p className="ml-2">{`${ProfileInfo?.first_name} ${ProfileInfo?.last_name}`}</p>
             </div>
@@ -87,6 +110,9 @@ const Profile = () => {
                 {ProfileInfo?.bio ? ProfileInfo?.bio : "Bio not added yet"}
               </p>
             </div>
+
+
+            {/* edit profile section */}
             <button
               className="w-40 h-10 mt-4 font-medium hover:bg-blue-500 bg-blue-300 rounded-md"
               onClick={() => {
@@ -95,18 +121,21 @@ const Profile = () => {
             >
               Edit Profile
             </button>
+
+
+
           </div>
           <div>
             {ProfileInfo?.profileSrc ? (
               <img
-                className="w-24 h-24 rounded-md bg-slate-500"
+                className="w-28 h-28 rounded-md bg-slate-500"
                 src={ProfileInfo?.profileSrc}
                 alt=""
               />
             ) : (
               <div
                 style={{ backgroundColor: ProfileColor }}
-                className="w-24 h-24 rounded-md bg-slate-500 font-semibold flex justify-center items-center text-3xl"
+                className="w-28 h-28 rounded-md bg-slate-500 font-semibold flex justify-center items-center text-3xl"
               >
                 {ProfileIframe?.toUpperCase()}
               </div>
