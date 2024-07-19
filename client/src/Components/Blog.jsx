@@ -11,23 +11,22 @@ const Blog = ({
   isAuthor,
   userEmail,
 }) => {
-
-  const {GetIframeColor ,GetUserIcon}=IframeLogic()
+  const { GetIframeColor, GetUserIcon } = IframeLogic();
   // user name for dispyling the Profile icon if will appear when we profilesrc will not present
   const [userName, setUserName] = useState();
-  const [IframeColor,setIframeColor]=useState("")
+  const [IframeColor, setIframeColor] = useState("");
   useEffect(() => {
     // here we are getting first latter of first and last  name
-    let username=GetUserIcon(name)
+    let username = GetUserIcon(name);
     setUserName(username);
-    setIframeColor(GetIframeColor(username[0]))
-  }, [name]);
+    setIframeColor(GetIframeColor(username[0]));
+  }, [GetIframeColor, GetUserIcon, name]);
   return (
     // main blog container
     <div className="w-full  p-2 hover:bg-slate-100 rounded-md mt-2 border-2 ">
       {/* getting and Blog title from props and displaying */}
       <h1 className="text-2xl font-bold p-2">{Title}</h1>
-      <div className="BloProfile min-w-48 max-w-full flex items-center p-2" >
+      <div className="BloProfile min-w-48 max-w-full flex items-center p-2">
         {/* getting the profileSrc from props */}
         {/* if profileScr is not present then we will display Fist later of First and last name ex:"Sandeep kundekar" return "SK"  */}
         {profileSrc ? (
@@ -37,7 +36,10 @@ const Blog = ({
             alt=""
           />
         ) : (
-          <h1 style={{backgroundColor:IframeColor}} className="w-14 h-14  rounded-full flex justify-center items-center font-medium text-xl  uppercase">
+          <h1
+            style={{ backgroundColor: IframeColor }}
+            className="w-14 h-14  rounded-full flex justify-center items-center font-medium text-xl  uppercase"
+          >
             {userName}
           </h1>
         )}
