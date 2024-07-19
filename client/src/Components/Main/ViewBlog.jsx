@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Comment from "../../helperComponents/Comment";
 import Loader from "../../helperComponents/Loader";
 import CommentImg from "../../Images/Comment.png";
@@ -11,13 +11,16 @@ import ToasterLogic from "../../Logic/ToasterLogic";
 import IframeLogic from "../../Logic/UserLogic";
 import { addCommentApiCall } from "../../Redux/Actions/AddCommentAction";
 import { getLikesApiCall } from "../../Redux/Actions/AddLikeAction";
+import { DeleteBlogApiCall } from "../../Redux/Actions/DeleteBlogAction";
 import { getBlogByIdApiCall } from "../../Redux/Actions/GetBlogByIdAction";
 import {
   getAllCommentApiCall,
   GetAllLikesApiCall,
 } from "../../Redux/Actions/GetCommentsAndLikesAction";
+import ManageBlogPopup from "../ManageBlogPopup";
 const ViewBlog = () => {
-  const [userId, setUserId] = useState();
+  const navigate = useNavigate();
+  const [userId , setUserId] = useState();
   useEffect(() => {
     let id = JSON.parse(localStorage.getItem("user"))._id;
     setUserId(id);
@@ -153,6 +156,12 @@ const ViewBlog = () => {
     Dispatch(GetAllLikesApiCall(id));
   };
 
+  // manage blog popup logic
+  const [openManagePopup, setOpenManagePopup] = useState(false);
+  const { DeletedBlogMessage, DeleteBlogLoading } = useSelector(
+    (state) => state.deleteBlog
+  );
+
   return (
     <div className="h-full w-full pt-20 pb-10">
       {/* subBlog container */}
@@ -166,10 +175,10 @@ const ViewBlog = () => {
         <div className="blogProfile flex mt-3 items-center">
           {/* profile pic */}
 
-          {blogData?.author?.profleSrc ? (
+          {blogData?.author?.profileSrc ? (
             <img
-              className="w-16 h-16 bg-slate-500 rounded-full"
-              src={blogData?.author?.profleSrc}
+              className="w-16 h-16 bg-slate-500 rounded-full border"
+              src={blogData?.author?.profileSrc}
               alt=""
             />
           ) : (
@@ -184,7 +193,7 @@ const ViewBlog = () => {
           {/* if we are seeing others blog then name and fallow button will be visible */}
           {/* if we are seeing personal blog then name and Email will be visible */}
           <div className=" ml-3">
-            <h1 className="text-xl font-medium">{`${viewBlog?.author?.first_name} ${viewBlog?.author?.last_name}`}</h1>
+            <h1 className="text-xl font-medium">{`${viewBlog?.author?.first_name} ${viewBlog?.author?.last_name}`} {PresentUser && `(Me)`}</h1>
 
             {/* toggling the follow button and email filed */}
             {PresentUser ? (
@@ -198,6 +207,19 @@ const ViewBlog = () => {
             {/* <p>Sandeep1000@gmail.com</p> */}
           </div>
         </div>
+        {
+          // only the author of the blog only can delete or edit the post
+          PresentUser && (
+            <div className="flex justify-end">
+              <button
+                className="w-28 h-8 text-white bg-blue-500 hover:bg-blue-600 rounded-md shadow-lg"
+                onClick={() => setOpenManagePopup(true)}
+              >
+                Manage
+              </button>
+            </div>
+          )
+        }
 
         {/* profile Image */}
 
@@ -312,8 +334,9 @@ const ViewBlog = () => {
                 return (
                   <Comment
                     key={index}
-                    Name={`${ele?.author.first_name} ${ele?.author.last_name}`}
+                    Name={`${ele?.author.first_name} ${ele?.author.last_name} ${ele?.author?._id===userId ?"(Me)":""}`}
                     commentText={ele?.content}
+                    profileSrc={ele?.author?.profileSrc}
                   />
                 );
               }
@@ -352,7 +375,22 @@ const ViewBlog = () => {
         addCommentLoading ||
         blogCommentLoading ||
         likesLoading ||
-        blogLikesLoading) && <Loader />}
+        blogLikesLoading ||
+        DeleteBlogLoading) && <Loader />}
+
+      {/* popup display */}
+      {/* manage popup for managing the blog like delete the blog or update the blog */}
+      {openManagePopup && (
+        <ManageBlogPopup
+          onCancel={() => {
+            setOpenManagePopup(false);
+          }}
+          onDelete={() => {
+            Dispatch(DeleteBlogApiCall(id, navigate));
+          }}
+          onUpdate={() => {}}
+        />
+      )}
     </div>
   );
 };

@@ -4,68 +4,85 @@
 
 /* styling the container of the signup and login page */
 .containerPage {
-    width: 850px;
-    height: 600px;
+  width: 850px;
+  height: 600px;
 }
 
 .joinUserBox {
-    background-image: linear-gradient(#355EAD, #AA00FA);
+  background-image: linear-gradient(#355ead, #aa00fa);
 }
 
 /* styling loader component */
 .loader {
-    background-color: rgba(128, 128, 128, 0.464);
+  background-color: rgba(255, 255, 255, 0.775);
 }
 
 /* styling home page */
 .blogSearchSection {
-    width: 100%;
-    min-height: 70vh;
-    max-height: 100%;
-    background: url('./Images/Blog-home.png') no-repeat center center/cover;
+  width: 100%;
+  min-height: 70vh;
+  max-height: 100%;
+  background: url("./Images/Blog-home.png") no-repeat center center/cover;
 }
 
 .sub-blogSearchSection {
-    width: 600px;
+  width: 600px;
 }
 
 .searchInput {
-    width: 600px;
+  width: 600px;
 }
 
-@media (max-width:768px) {
-    .searchInput {
-        width: 300px;
-    }
+@media (max-width: 768px) {
+  .searchInput {
+    width: 300px;
+  }
 
-    .sub-blogSearchSection {
-        width: 300px;
-    }
+  .sub-blogSearchSection {
+    width: 300px;
+  }
 }
 
 /* styling the addBlog subContainer */
 .addSubContainer,
 .ProfileSubContainer {
-    width: 768px;
-    height: auto;
-    margin: auto;
+  width: 768px;
+  height: auto;
+  margin: auto;
 }
 
 .addImg {
-    background: url("./Images/addBlog.jpg") no-repeat center center/cover;
+  background: url("./Images/addBlog.jpg") no-repeat center center/cover;
 }
 
-@media (max-width:768px) {
-
-    .addSubContainer,
-    .ProfileSubContainer {
-        width: 95%;
-        height: auto;
-        margin: auto;
-    }
+@media (max-width: 768px) {
+  .addSubContainer,
+  .ProfileSubContainer {
+    width: 95%;
+    height: auto;
+    margin: auto;
+  }
 }
 
-.profileDropdown {
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-    ;
+.profileDropdown,
+.ManageConfirmationPopup {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.popupProvider {
+  background-color: rgba(128, 128, 128, 0.534);
+}
+
+/* styling updateProfilePopup */
+
+.updateProfilePopup {
+  width: 700px;
+  border-radius: 8px;
+  height: 500px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
