@@ -1,18 +1,23 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../helperComponents/Loader";
 import ProfleBlog from "../../helperComponents/ProfleBlog";
 import ToasterLogic from "../../Logic/ToasterLogic";
 import UserLogic from "../../Logic/UserLogic";
+import { followUnfollowApiCall } from "../../Redux/Actions/FollowAndUnfollowAction";
 import { updateProfileApiCall } from "../../Redux/Actions/UpdateProfileAction";
 import { GetUserInfoApiCall } from "../../Redux/Actions/UserProfileAction";
 import UpdateProfilePopup from "../UpdateprofilePopup";
 const Profile = () => {
+
+  const { userId } = useParams()
   // update profile message
   const { UpdateProfileMessage, UpdateProfileLoading } = useSelector(
     (state) => state.UpdateProfile
   );
+  //follow unfollow message
+  const { FollowInfollowMessage, FollowUnfollowLoading } = useSelector((state) => state.followUnfollow)
   const { successToaster } = ToasterLogic();
   const Navigate = useNavigate();
   const [showUpdatePopup, setshowUpadtePopup] = useState(false);
@@ -21,6 +26,9 @@ const Profile = () => {
   const { ProfileData, ProfileLoading } = useSelector(
     (state) => state.UserInfo
   );
+
+  // present user is author of this profile
+  const [presentUser, setPresentUser] = useState()
 
   //   profile info state
   const [ProfileInfo, setProfileInfo] = useState();
@@ -31,8 +39,8 @@ const Profile = () => {
 
   useEffect(() => {
     // calling the get profile api
-    Dispatch(GetUserInfoApiCall());
-  }, [Dispatch]);
+    Dispatch(GetUserInfoApiCall(userId));
+  }, [Dispatch, userId]);
 
   useEffect(() => {
     setProfileInfo(ProfileData);
@@ -42,6 +50,20 @@ const Profile = () => {
     // setting the Profile iFrame color
     setProfileColor(GetIframeColor(name[0]));
   }, [ProfileData]);
+
+
+  // checking present user id author of this account
+
+  useEffect(() => {
+    let localAuthorUserId = JSON.parse(localStorage.getItem("user"))._id
+    if (localAuthorUserId === userId) {
+      setPresentUser(true)
+    }
+    else {
+      setPresentUser(false)
+    }
+
+  }, [userId])
 
   // update profile fucntion
   const UpdateProfile = (updatedData) => {
@@ -59,14 +81,30 @@ const Profile = () => {
 
     setshowUpadtePopup(false);
     setTimeout(() => {
-      Dispatch(GetUserInfoApiCall());
+      Dispatch(GetUserInfoApiCall(userId));
     }, 1000);
   };
+
+
+  // follow unfollow logic
+
+
+  const followUnfollow = () => {
+    let followerId = JSON.parse(localStorage.getItem("user"))._id
+    Dispatch(followUnfollowApiCall(followerId, userId, successToaster))
+    setTimeout(() => {
+      Dispatch(GetUserInfoApiCall(userId));
+    }, 500);
+  }
+
   return (
     <div className="pt-20 w-full h-full">
       <div className="xl:w-2/4 md:w-4/5 w-11/12 m-auto">
         <h1 className="md:text-3xl text-2xl w-full border-b-2 border-slate-300 pb-5 font-bold">
-          My Profile Information
+          {
+            presentUser ? "    My Profile Information" : "Profile Information"
+          }
+
         </h1>
         {/* profile section */}
         <div className="w-full pt-3 flex sm:flex-row flex-col-reverse ">
@@ -77,21 +115,36 @@ const Profile = () => {
               <div className="followUnfollowSection flex justify-between">
                 {/* total posts */}
                 <div className="w-24 h-16 flex flex-col justify-center items-center">
-                  <p className=" text-lg font-semibold">4</p>
+                  <p className=" text-lg font-semibold">{ProfileInfo?.blogs.length}</p>
                   <p className=" text-lg font-semibold">Posts</p>
                 </div>
                 {/* Total Followers */}
                 <div className="w-24 h-16 flex flex-col justify-center items-center">
-                  <p className=" text-lg font-semibold">10</p>
+                  <p className=" text-lg font-semibold">{ProfileInfo?.followers.length}</p>
                   <p className=" text-lg font-semibold">Followers</p>
                 </div>
                 {/* total following  */}
                 <div className="w-24 h-16 flex flex-col justify-center items-center">
-                  <p className=" text-lg font-semibold">5</p>
+                  <p className=" text-lg font-semibold">{ProfileInfo?.followings.length}</p>
                   <p className=" text-lg font-semibold">Following</p>
                 </div>
               </div>
-              <button className="followButton  w-full m-auto bg-blue-500 rounded-md shadow-md h-9 mt-4">Follow</button>
+
+              {
+
+                !presentUser && <>
+                  {
+                    // checking that present user as followed or not 
+                    ProfileInfo?.followers?.includes(JSON.parse(localStorage.getItem("user"))._id)
+                      ?
+                      <button className="unfollowButton  w-full m-auto bg-blue-200 font-medium rounded-md shadow-sm border h-9 mt-4" onClick={followUnfollow}>Following</button>
+                      :
+                      <button className="followButton  w-full m-auto bg-blue-500 rounded-md shadow-md h-9 mt-4" onClick={followUnfollow}>Follow</button>
+                  }
+
+                </>
+              }
+
             </div>
             {/* profile info */}
             <div className="flex font-medium text-lg name text-gray-600 mt-4">
@@ -113,14 +166,18 @@ const Profile = () => {
 
 
             {/* edit profile section */}
-            <button
-              className="w-40 h-10 mt-4 font-medium hover:bg-blue-500 bg-blue-300 rounded-md"
-              onClick={() => {
-                setshowUpadtePopup(true);
-              }}
-            >
-              Edit Profile
-            </button>
+
+            {
+              presentUser && <button
+                className="w-40 h-10 mt-4 font-medium hover:bg-blue-500 bg-blue-300 rounded-md"
+                onClick={() => {
+                  setshowUpadtePopup(true);
+                }}
+              >
+                Edit Profile
+              </button>
+            }
+
 
 
 
@@ -171,20 +228,24 @@ const Profile = () => {
                 <h1 className="text-center text-gray-700 text-2xl font-bold ">
                   No Blogs Available
                 </h1>
-                <button
-                  className="text-lg font-medium text-white bg-blue-500 rounded-md shadow-md w-32 h-9 mt-4 m-auto hover:bg-blue-600"
-                  onClick={() => {
-                    Navigate("/addblog");
-                  }}
-                >
-                  Add Blog
-                </button>
+
+                {
+                  presentUser && <button
+                    className="text-lg font-medium text-white bg-blue-500 rounded-md shadow-md w-32 h-9 mt-4 m-auto hover:bg-blue-600"
+                    onClick={() => {
+                      Navigate("/addblog");
+                    }}
+                  >
+                    Add Blog
+                  </button>
+                }
+
               </div>
             )}
           </div>
         </div>
       </div>
-      {(ProfileLoading || UpdateProfileLoading) && <Loader />}
+      {(ProfileLoading || UpdateProfileLoading || FollowUnfollowLoading) && <Loader />}
 
       {/* update profile popup */}
       {showUpdatePopup && (

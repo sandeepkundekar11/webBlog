@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-const NavBar = ({ path }) => {
+const NavBar = ({ path ,userId }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const Navigate = useNavigate();
   return (
@@ -63,7 +63,7 @@ const NavBar = ({ path }) => {
               <p
                 className="font-medium cursor-pointer h-10 hover:bg-blue-300  py-2 px-2 rounded-md"
                 onClick={() => {
-                  Navigate("/profile");
+                  Navigate(`/profile/${userId}`);
                 }}
               >
                 Profile

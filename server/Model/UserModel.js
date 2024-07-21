@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
   profileSrc: {
     type: String,
+    require:true
   },
   first_name: {
     type: String,

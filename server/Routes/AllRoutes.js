@@ -114,7 +114,7 @@ Router.post("/getCommentAndLikes/:blogId", Middleware, GetCommentsAndLikes);
 
 // defining the Get profile info route which handles GET request
 // url http://localhost:8000/blog/getProfile
-Router.get("/getProfile", Middleware, GetprofileInfo);
+Router.get("/getProfile/:userId", Middleware, GetprofileInfo);
 
 // Defining the Delete blog  which handles Delete request
 // url http://localhost:8000/blog/deleteBlog/{blogid}

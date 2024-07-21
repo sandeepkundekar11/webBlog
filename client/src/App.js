@@ -23,7 +23,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/addblog" element={<AddBlog />} />
             <Route path="/viewblog/:id" element={<ViewBlog />} />
-            <Route path="/profile" element={<Profile/>}/>
+            <Route path="/profile/:userId" element={<Profile/>}/>
           </Route>
           {/* Protected Wrapper ends */}
 

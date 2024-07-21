@@ -7,7 +7,7 @@ import NavBar from "./Components/NavBar";
 const PrivateComponent = () => {
   // Authentication variable "defautl"  true
   const [authenticated, setAuthenticated] = useState(true);
-
+  const [UserId,setUserID]=useState(null)
   //   getting the current route path
   const [path, setPath] = useState(null);
   //   using the uselocation hook for getting the current (path) route
@@ -22,6 +22,9 @@ const PrivateComponent = () => {
   useEffect(() => {
     // getting the token from local storage
     let token = localStorage.getItem("token");
+    let userId=JSON.parse(localStorage.getItem("user"))._id
+    console.log(userId,"userId")
+    setUserID(userId)
     if (token) {
       // if Token is present the user is authenticated
       setAuthenticated(true);
@@ -36,7 +39,7 @@ const PrivateComponent = () => {
         // if user is authenticated then return the outlate which represents all protected component like Home.jsx ....
         <>
           {/* navigation bar */}
-          <NavBar path={path} />
+          <NavBar path={path} userId={UserId} />
           <Outlet />
           <ToastContainer
             position="bottom-right"
