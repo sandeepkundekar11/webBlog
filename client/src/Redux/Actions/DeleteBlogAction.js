@@ -25,7 +25,7 @@ const deleteBlogErrAction = (err) => {
 
 // calling the delete blog api
 
-export const DeleteBlogApiCall = (blogId,navigate) => {
+export const DeleteBlogApiCall = (blogId,navigate,id) => {
     return async (Dispatch) => {
         try {
             let token = localStorage.getItem("token")
@@ -40,7 +40,7 @@ export const DeleteBlogApiCall = (blogId,navigate) => {
             let data = await response.json()
             if (data.message) {
                 Dispatch(deleteBlogAction(data.message))
-                navigate("/profile")
+                navigate(`/profile/${id}`)
             }
             else {
                 Dispatch(deleteBlogErrAction(data.message))

@@ -119,14 +119,24 @@ const Profile = () => {
                   <p className=" text-lg font-semibold">Posts</p>
                 </div>
                 {/* Total Followers */}
-                <div className="w-24 h-16 flex flex-col justify-center items-center">
+                <div className="w-24 h-16 flex flex-col justify-center items-center hover:bg-slate-50 rounded-lg" onClick={()=>
+                  {
+                    // navigating to the follower list
+                    Navigate(`/followers/${userId}`)
+                  }
+                }>
                   <p className=" text-lg font-semibold">{ProfileInfo?.followers.length}</p>
-                  <p className=" text-lg font-semibold">Followers</p>
+                  <p className=" text-lg font-semibold cursor-pointer" >Followers</p>
                 </div>
                 {/* total following  */}
-                <div className="w-24 h-16 flex flex-col justify-center items-center">
+                <div className="w-24 h-16 flex flex-col justify-center items-center hover:bg-slate-50 rounded-lg" onClick={()=>
+                  {
+                    // navigating to the follower list
+                    Navigate(`/followers/${userId}`)
+                  }
+                }>
                   <p className=" text-lg font-semibold">{ProfileInfo?.followings.length}</p>
-                  <p className=" text-lg font-semibold">Following</p>
+                  <p className=" text-lg font-semibold cursor-pointer">Following</p>
                 </div>
               </div>
 

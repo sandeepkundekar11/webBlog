@@ -18,6 +18,7 @@ const { GetprofileInfo } = require("../Controller/GetProfileController");
 const { DeleteBlog } = require("../Controller/DeleteBlogController");
 const { UpdateProfile } = require("../Controller/UpdateProfileController");
 const { FollowUnFollow } = require("../Controller/FollowAndUnfollowController");
+const { GetAllFollowerAndFollowingList } = require("../Controller/GetAllFollowersAndFollowingList");
 
 // connecting to mongodb database
 mongoose
@@ -134,5 +135,10 @@ Router.put(
 // url http://localhost:8000/blog/followAndUnfollow/:followerId/:userId
 // followerId="id of user who is going follow"
 // userId ="id of user to whom follower is going to follow"
-Router.put("/followAndUnfollow/:followerId/:userId",Middleware,FollowUnFollow)
+Router.put("/followAndUnfollow/:followerId/:userId", Middleware, FollowUnFollow)
+
+
+// Defining the get follow and following list which Handles GET request
+// url http://localhost:8000/blog/followingAndFollowersList/:userId
+Router.get("/followingAndFollowersList/:userId", Middleware, GetAllFollowerAndFollowingList)
 module.exports = { Router };

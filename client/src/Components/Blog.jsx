@@ -66,7 +66,7 @@ const Blog = ({
         {/* mapping the categories which is extracted from props */}
         {Categories.map((ele, index) => {
           return (
-            <div key={index} className="w-24 p-2 rounded-2xl bg-slate-300 m-2">
+            <div key={index} className="w-24 p-2 rounded-2xl text-center bg-slate-200 m-2">
               {ele}
             </div>
           );

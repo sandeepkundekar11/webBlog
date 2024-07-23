@@ -418,7 +418,7 @@ const ViewBlog = () => {
             setOpenManagePopup(false);
           }}
           onDelete={() => {
-            Dispatch(DeleteBlogApiCall(id, navigate));
+            Dispatch(DeleteBlogApiCall(id, navigate,userId));
           }}
           onUpdate={() => { }}
         />
