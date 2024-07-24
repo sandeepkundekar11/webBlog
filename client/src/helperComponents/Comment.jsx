@@ -16,7 +16,7 @@ const Comment = ({ profileSrc, Name, commentText, commentAuthorId }) => {
 
   const [commentAuthor, setCommentAuthor] = useState(false)
   useEffect(() => {
-    let presentUserId = JSON.parse(localStorage.getItem("user"))._id
+    let presentUserId = JSON.parse(localStorage.getItem("user"))?._id
     if (presentUserId === commentAuthorId) {
       setCommentAuthor(true)
     }

@@ -22,7 +22,7 @@ const PrivateComponent = () => {
   useEffect(() => {
     // getting the token from local storage
     let token = localStorage.getItem("token");
-    let userId=JSON.parse(localStorage.getItem("user"))._id
+    let userId=JSON.parse(localStorage.getItem("user"))?._id
     console.log(userId,"userId")
     setUserID(userId)
     if (token) {

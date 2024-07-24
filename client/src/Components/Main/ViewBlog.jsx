@@ -122,7 +122,7 @@ const ViewBlog = () => {
     // if both are not same the your not author of this blog and we will show follow button
 
     let blogAuthorId = viewBlog?.author?._id;
-    let PresentUserId = JSON.parse(localStorage.getItem("user"))._id;
+    let PresentUserId = JSON.parse(localStorage.getItem("user"))?._id;
     if (blogAuthorId === PresentUserId) {
       setPresentUser(true);
     } else {
@@ -170,7 +170,7 @@ const ViewBlog = () => {
   //follow unfollow message
   const { FollowInfollowMessage, FollowUnfollowLoading } = useSelector((state) => state.followUnfollow)
   const followUnfollow = () => {
-    let followerId = JSON.parse(localStorage.getItem("user"))._id
+    let followerId = JSON.parse(localStorage.getItem("user"))?._id
     let blogAuthorId = viewBlog?.author?._id;
     // calling the follow unfollw api
     Dispatch(followUnfollowApiCall(followerId, blogAuthorId, successToaster))
@@ -222,7 +222,7 @@ const ViewBlog = () => {
               <>
                 {
 
-                  viewBlog?.author?.followers.includes(JSON.parse(localStorage.getItem("user"))._id) ?
+                  viewBlog?.author?.followers.includes(JSON.parse(localStorage.getItem("user"))?._id) ?
                     <button className="bg-blue-100 rounded-xl w-28 mt-2 text-black font-medium h-8" onClick={followUnfollow}>
                       Following
                     </button> : <button className="bg-blue-600 rounded-xl w-28 mt-2 text-white h-8" onClick={followUnfollow}>

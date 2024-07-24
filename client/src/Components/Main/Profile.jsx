@@ -55,7 +55,7 @@ const Profile = () => {
   // checking present user id author of this account
 
   useEffect(() => {
-    let localAuthorUserId = JSON.parse(localStorage.getItem("user"))._id
+    let localAuthorUserId = JSON.parse(localStorage.getItem("user"))?._id
     if (localAuthorUserId === userId) {
       setPresentUser(true)
     }
@@ -90,7 +90,7 @@ const Profile = () => {
 
 
   const followUnfollow = () => {
-    let followerId = JSON.parse(localStorage.getItem("user"))._id
+    let followerId = JSON.parse(localStorage.getItem("user"))?._id
     Dispatch(followUnfollowApiCall(followerId, userId, successToaster))
     setTimeout(() => {
       Dispatch(GetUserInfoApiCall(userId));
@@ -145,7 +145,7 @@ const Profile = () => {
                 !presentUser && <>
                   {
                     // checking that present user as followed or not 
-                    ProfileInfo?.followers?.includes(JSON.parse(localStorage.getItem("user"))._id)
+                    ProfileInfo?.followers?.includes(JSON.parse(localStorage.getItem("user"))?._id)
                       ?
                       <button className="unfollowButton  w-full m-auto bg-blue-200 font-medium rounded-md shadow-sm border h-9 mt-4" onClick={followUnfollow}>Following</button>
                       :

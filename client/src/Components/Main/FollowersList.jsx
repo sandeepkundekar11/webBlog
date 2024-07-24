@@ -54,7 +54,7 @@ const FollowersList = () => {
 
     // following and unfollowing the user 
     const FollowUnfollow = (personToFollowUserId) => {
-        let followerId = JSON.parse(localStorage.getItem("user"))._id
+        let followerId = JSON.parse(localStorage.getItem("user"))?._id
         Dispatch(followUnfollowApiCall(followerId, personToFollowUserId, successToaster))
         setTimeout(() => {
             // calling the get profile api

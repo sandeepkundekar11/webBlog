@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import UserLogic from "../Logic/UserLogic";
 
 const FollowComponent = ({ userArray = [], followUnfollow }) => {
 
     const { GetIframeColor, GetUserIcon } = UserLogic();
+    const Navigate = useNavigate()
     const [users, setUsers] = useState([])
     useEffect(() => {
         // updating the following and followers array and combining the profile Iframe and color
@@ -35,15 +37,22 @@ const FollowComponent = ({ userArray = [], followUnfollow }) => {
 
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-medium">{`${ele?.first_name} ${ele?.last_name}`}</h3>
+                                    <h3 className="text-sm font-medium cursor-pointer hover:text-blue-500" onClick={() => {
+                                        Navigate(`/profile/${ele._id}`)
+                                    }
+                                    }>{`${ele?.first_name} ${ele?.last_name}`}</h3>
                                     <p className="text-xs text-gray-500 w-16 text-wrap">{ele?.email}</p>
                                 </div>
                             </div>
                             {
-                                // if logged in user id is present in mapped followers array then logged user following mapped user
-                                ele?.followers?.includes(JSON.parse(localStorage.getItem("user"))._id) ?
-                                    <button className="rounded-lg shadow-sm border-2 px-4 py-2 text-sm hover:bg-blue-500 font-medium" onClick={()=>followUnfollow(ele?._id)}>UnFollow</button> :
-                                    <button className="rounded-lg shadow-sm border-2 px-4 py-2 text-sm hover:bg-blue-500 font-medium"  onClick={()=>followUnfollow(ele?._id)}>Follow</button>
+                                // if logged in user id and follower or following user id is same then return different button
+                                ele._id === JSON.parse(localStorage.getItem("user"))?._id ? <button className="rounded-lg shadow-sm border-2 px-4 py-2 text-sm hover:bg-blue-500 font-medium">You</button> :
+                                    (
+                                        // if logged in user id is present in mapped followers array then logged user following mapped user
+                                        ele?.followers?.includes(JSON.parse(localStorage.getItem("user"))?._id) ?
+                                            <button className="rounded-lg shadow-sm border-2 px-4 py-2 text-sm hover:bg-blue-500 font-medium" onClick={() => followUnfollow(ele?._id)}>Following</button> :
+                                            <button className="rounded-lg shadow-sm border-2 px-4 py-2 text-sm hover:bg-blue-500 font-medium" onClick={() => followUnfollow(ele?._id)}>Follow</button>
+                                    )
                             }
 
                         </div>

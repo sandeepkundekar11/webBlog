@@ -12,15 +12,31 @@ const Home = () => {
   const { BlogsLoading, Allblogs } = useSelector((state) => state.allBlogs);
 
   const [blogs, setBlogs] = useState([]);
+  // all blog categories
+  const [BlogCategories, setBlogCategories] = useState([])
+
+  // show dropdown state
+  const [ShowDropdown, setShowDropdown] = useState(false)
 
   useEffect(() => {
     // dispatching GetAllBlog api Function from GetAll blog action file
     Dispatch(GetAllBlogsApiCall());
   }, [Dispatch]);
 
+
+
   useEffect(() => {
     // getting and storing in to the setBlogs State
     setBlogs(Allblogs);
+
+    // getting all the categories and removing duplicate categories for it using filter
+    let categories = Allblogs?.reduce((acc, curr) => {
+      acc.push(curr.categories)
+      return acc
+    }, []).flat().filter((ele, index, self) => {
+      return self.indexOf(ele) === index
+    })
+    setBlogCategories(categories)
   }, [Allblogs]);
   return (
     <div className="min-h-screen max-h-full w-full">
@@ -31,14 +47,33 @@ const Home = () => {
           <h1 className="text-3xl mb-5 font-bold text-white">
             Create, Share, Inspire with BlogSpace
           </h1>
-          <div className="searchInput flex  bg-gray-100 rounded-md h-10">
-            <img className="w-12 h-full p-1" src={SearchImg} alt="" />
-            <input
-              className=" w-full h-full bg-gray-100 pl-2 rounded-md outline-none"
-              type="text"
-              placeholder="Search Categories"
-            />
+
+          {/* search blog container */}
+          <div className="relative" onBlur={() => {
+            setShowDropdown(false)
+          }
+          }>
+            <div className="searchInput flex  bg-gray-100 rounded-md h-10" >
+              <img className="w-12 h-full p-1" src={SearchImg} alt="" />
+              <input
+                className=" w-full h-full bg-gray-100 pl-2 rounded-md outline-none"
+                type="text"
+                placeholder="Search Blogs or User..."
+                onFocus={() => {
+                  setShowDropdown(true)
+                }}
+              />
+            </div>
+            {/* search dropdown */}
+            {
+              ShowDropdown && (
+                <div className="w-full absolute top-10 min-h-11 max-h-80 bg-slate-300 shadow-2xl rounded-md ">
+
+                </div>
+              )
+            }
           </div>
+
 
           {/* category container */}
           <div className="CategoriesContainer  w-full mt-4  ">
@@ -49,14 +84,14 @@ const Home = () => {
               <div className=" flex flex-wrap">
                 {
                   // displaying all the categories
-                  [1, 2, 3, 4, 5, 6, 7].map((ele, index) => {
+                  BlogCategories.map((ele, index) => {
                     return (
                       <div
                         key={index}
-                        className="w-24 h-6 rounded-sm text-blue-600 text-sm bg-gray-100 font-medium
+                        className="w-24 h-8 hover:bg-blue-500 hover:text-white  rounded-md text-blue-600 text-sm bg-gray-100 font-medium
                                                 m-1 flex justify-center cursor-pointer items-center text-center"
                       >
-                        {"Technology"}
+                        {ele}
                       </div>
                     );
                   })
