@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import IframeLogic from "../Logic/UserLogic";
 
 const Blog = ({
@@ -11,6 +12,8 @@ const Blog = ({
   isAuthor,
   userEmail,
 }) => {
+
+  const navigate=useNavigate()
   const { GetIframeColor, GetUserIcon } = IframeLogic();
   // user name for dispyling the Profile icon if will appear when we profilesrc will not present
   const [userName, setUserName] = useState();
@@ -21,6 +24,7 @@ const Blog = ({
     setUserName(username);
     setIframeColor(GetIframeColor(username[0]));
   }, [GetIframeColor, GetUserIcon, name]);
+  
   return (
     // main blog container
     <div className="w-full  p-2 hover:bg-slate-100 rounded-md mt-2 border-2 ">
@@ -46,15 +50,15 @@ const Blog = ({
 
         <div className="pl-2">
           {/* getting the name from props and  setting*/}
-          <p className="text-lg font-medium">{name} </p>
+          <p onClick={()=>navigate(`/profile/${isAuthor}`)} className=" cursor-pointer hover:text-blue-500 text-lg font-medium">{name} {JSON.parse(localStorage.getItem("user"))._id === isAuthor && "(Me)"} </p>
           {/* setting Follow ,unFallow button */}
 
           {JSON.parse(localStorage.getItem("user"))._id === isAuthor ? (
             <p>{userEmail}</p>
           ) : (
-            <button className="bg-blue-600 w-28 p-1 text-white rounded-xl">
-              follow
-            </button>
+            <p className=" w-auto p-1 text-slate-700 rounded-xl">
+              Suggested for you...
+            </p>
           )}
         </div>
       </div>
@@ -62,7 +66,7 @@ const Blog = ({
         {/* mapping the categories which is extracted from props */}
         {Categories.map((ele, index) => {
           return (
-            <div key={index} className="w-24 p-2 rounded-2xl bg-slate-300 m-2">
+            <div key={index} className="w-24 p-2 rounded-2xl text-center bg-slate-200 m-2">
               {ele}
             </div>
           );

@@ -12,6 +12,7 @@ import IframeLogic from "../../Logic/UserLogic";
 import { addCommentApiCall } from "../../Redux/Actions/AddCommentAction";
 import { getLikesApiCall } from "../../Redux/Actions/AddLikeAction";
 import { DeleteBlogApiCall } from "../../Redux/Actions/DeleteBlogAction";
+import { followUnfollowApiCall } from "../../Redux/Actions/FollowAndUnfollowAction";
 import { getBlogByIdApiCall } from "../../Redux/Actions/GetBlogByIdAction";
 import {
   getAllCommentApiCall,
@@ -20,7 +21,7 @@ import {
 import ManageBlogPopup from "../ManageBlogPopup";
 const ViewBlog = () => {
   const navigate = useNavigate();
-  const [userId , setUserId] = useState();
+  const [userId, setUserId] = useState();
   useEffect(() => {
     let id = JSON.parse(localStorage.getItem("user"))._id;
     setUserId(id);
@@ -28,6 +29,8 @@ const ViewBlog = () => {
   const { GetIframeColor, GetUserIcon } = IframeLogic();
   const { successToaster } = ToasterLogic();
   const Dispatch = useDispatch();
+
+
   // it sets how many number of comments should be visible if it 2 then only two comments will be visible
   const [commentCoutToShow, setCommentCountToShow] = useState(1);
   // profile name if author is profile is not available
@@ -119,7 +122,7 @@ const ViewBlog = () => {
     // if both are not same the your not author of this blog and we will show follow button
 
     let blogAuthorId = viewBlog?.author?._id;
-    let PresentUserId = JSON.parse(localStorage.getItem("user"))._id;
+    let PresentUserId = JSON.parse(localStorage.getItem("user"))?._id;
     if (blogAuthorId === PresentUserId) {
       setPresentUser(true);
     } else {
@@ -162,6 +165,23 @@ const ViewBlog = () => {
     (state) => state.deleteBlog
   );
 
+
+  // follow unfollow logic
+  //follow unfollow message
+  const { FollowInfollowMessage, FollowUnfollowLoading } = useSelector((state) => state.followUnfollow)
+  const followUnfollow = () => {
+    let followerId = JSON.parse(localStorage.getItem("user"))?._id
+    let blogAuthorId = viewBlog?.author?._id;
+    // calling the follow unfollw api
+    Dispatch(followUnfollowApiCall(followerId, blogAuthorId, successToaster))
+    setTimeout(()=>{
+     // calling the api getBlogById
+    Dispatch(getBlogByIdApiCall(id));
+    },500)
+  }
+
+
+
   return (
     <div className="h-full w-full pt-20 pb-10">
       {/* subBlog container */}
@@ -193,16 +213,26 @@ const ViewBlog = () => {
           {/* if we are seeing others blog then name and fallow button will be visible */}
           {/* if we are seeing personal blog then name and Email will be visible */}
           <div className=" ml-3">
-            <h1 className="text-xl font-medium">{`${viewBlog?.author?.first_name} ${viewBlog?.author?.last_name}`} {PresentUser && `(Me)`}</h1>
+            <h1 onClick={() => navigate(`/profile/${viewBlog?.author?._id}`)} className="text-xl cursor-pointer hover:text-blue-500 font-medium">{`${viewBlog?.author?.first_name} ${viewBlog?.author?.last_name}`} {PresentUser && `(Me)`}</h1>
 
             {/* toggling the follow button and email filed */}
             {PresentUser ? (
               <p>{viewBlog?.author?.email}</p>
-            ) : (
-              <button className="bg-blue-600 rounded-xl w-28 mt-2 text-white h-8">
-                Follow
-              </button>
-            )}
+            ) :
+              <>
+                {
+
+                  viewBlog?.author?.followers.includes(JSON.parse(localStorage.getItem("user"))?._id) ?
+                    <button className="bg-blue-100 rounded-xl w-28 mt-2 text-black font-medium h-8" onClick={followUnfollow}>
+                      Following
+                    </button> : <button className="bg-blue-600 rounded-xl w-28 mt-2 text-white h-8" onClick={followUnfollow}>
+                      Follow
+                    </button>
+
+                }
+              </>
+
+            }
 
             {/* <p>Sandeep1000@gmail.com</p> */}
           </div>
@@ -334,9 +364,10 @@ const ViewBlog = () => {
                 return (
                   <Comment
                     key={index}
-                    Name={`${ele?.author.first_name} ${ele?.author.last_name} ${ele?.author?._id===userId ?"(Me)":""}`}
+                    Name={`${ele?.author.first_name} ${ele?.author.last_name} ${ele?.author?._id === userId ? "(Me)" : ""}`}
                     commentText={ele?.content}
                     profileSrc={ele?.author?.profileSrc}
+                    commentAuthorId={ele?.author?._id}
                   />
                 );
               }
@@ -376,7 +407,8 @@ const ViewBlog = () => {
         blogCommentLoading ||
         likesLoading ||
         blogLikesLoading ||
-        DeleteBlogLoading) && <Loader />}
+        DeleteBlogLoading ||
+         FollowUnfollowLoading) && <Loader />}
 
       {/* popup display */}
       {/* manage popup for managing the blog like delete the blog or update the blog */}
@@ -386,9 +418,9 @@ const ViewBlog = () => {
             setOpenManagePopup(false);
           }}
           onDelete={() => {
-            Dispatch(DeleteBlogApiCall(id, navigate));
+            Dispatch(DeleteBlogApiCall(id, navigate,userId));
           }}
-          onUpdate={() => {}}
+          onUpdate={() => { }}
         />
       )}
     </div>

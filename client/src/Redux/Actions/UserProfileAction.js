@@ -25,12 +25,12 @@ const getUserInfoErrorAction = (error) => {
 
 // calling the get USer info api
 
-export const GetUserInfoApiCall = () => {
+export const GetUserInfoApiCall = (userId) => {
     return async (Dispatch) => {
         try {
             let token = localStorage.getItem("token")
             Dispatch(getUserInfoRequestAction())
-            let response = await fetch("http://localhost:8000/blog/getProfile", {
+            let response = await fetch(`http://localhost:8000/blog/getProfile/${userId}`, {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }

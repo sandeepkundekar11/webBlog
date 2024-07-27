@@ -14,15 +14,13 @@ const UpdateProfile = AsyncHandler(async (req, res) => {
     const profileSrc = req.file
       ? `http://localhost:8000/${req.file.filename}`
       : profile;
-
     // when we are upading the image that time till will remove previous image if it is present
-    if (presentUser.profileSrc !== profileSrc && presentUser.profileSrc) {
+    if (presentUser.profileSrc !== profileSrc && presentUser.profileSrc && profileSrc!=="null" && profileSrc!==null && profileSrc!==undefined &&profileSrc!=="undefined" ) {
       let imagePath = presentUser.profileSrc.split("/")[3];
       let imagefilePath = path.join(
         __dirname,
         `../Storage/Profiles/${imagePath}`
       );
-      console.log(imagePath);
       try {
         fs.unlinkSync(imagefilePath);
       } catch (error) {
@@ -46,13 +44,13 @@ const UpdateProfile = AsyncHandler(async (req, res) => {
             `../Storage/Profiles/${presentUser?.profileSrc?.split("/")[3]}`
           )
         )
+        
       ) {
         let ProfileImageToBeDelete = presentUser.profileSrc.split("/")[3];
         let FilePath = path.join(
           __dirname,
           `../Storage/Profiles/${ProfileImageToBeDelete}`
         );
-        console.log(ProfileImageToBeDelete);
         try {
           fs.unlinkSync(FilePath);
         } catch (error) {
@@ -72,8 +70,8 @@ const UpdateProfile = AsyncHandler(async (req, res) => {
           bio,
           email,
           profileSrc:
-            profile === null || profile === "" || profile === "null"
-              ? null
+            profile === null || profile === "" || profile === "null" || profile==="undefined"
+              ? null 
               : profileSrc,
         },
       }
