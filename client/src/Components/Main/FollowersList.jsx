@@ -86,10 +86,10 @@ const FollowersList = () => {
                 <div className="border-b">
                     {/* followers and unfollowers button */}
                     <div className="flex">
-                        <button className={`flex-1 border-b-2  p-4 text-center ${SelectedType === "Followers" && "border-blue-500"}`} onClick={() => {
+                        <button className={`flex-1 border-b-2  p-4 text-center ${SelectedType === "Followers" && "border-blue-500 bg-blue-100"}`} onClick={() => {
                             setSelectedType("Followers")
                         }}>Followers</button>
-                        <button className={`flex-1 border-b-2  p-4 text-center ${SelectedType === "Following" && "border-blue-500"}`} onClick={() => {
+                        <button className={`flex-1 border-b-2  p-4 text-center ${SelectedType === "Following" && "border-blue-500  bg-blue-100"}`} onClick={() => {
                             setSelectedType("Following")
                         }
                         }>Following</button>

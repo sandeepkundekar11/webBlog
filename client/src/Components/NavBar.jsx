@@ -1,9 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import UserLogic from "../Logic/UserLogic";
+import { GetUserInfoApiCall } from "../Redux/Actions/UserProfileAction";
 
-const NavBar = ({ path ,userId }) => {
+const NavBar = ({ path, userId }) => {
+  const Dispatch = useDispatch()
   const [showDropdown, setShowDropdown] = useState(false);
+  const { GetIframeColor, GetUserIcon } = UserLogic()
   const Navigate = useNavigate();
+  // state to store the userIframe when user src is not available
+  const [UserIframe, setUserIframe] = useState()
+  //  state to store the user profile color
+  const [ProfileColor, setProfileColor] = useState()
+
+  // getting user data
+  const { ProfileData } = useSelector((state) => state.UserInfo)
+
+  // calling  the getuser api
+  useEffect(() => {
+    let userId = JSON.parse(localStorage.getItem("user"))?._id
+    // calling the get profile api
+    Dispatch(GetUserInfoApiCall(userId));
+  }, [Dispatch]);
+
+  // setting the user iframe and profile color
+  useEffect(() => {
+    let name = `${ProfileData?.first_name} ${ProfileData?.last_name}`
+    // iframe
+    setUserIframe(GetUserIcon(name))
+    // color
+    setProfileColor(GetIframeColor(name[0]))
+  }, [ProfileData])
   return (
     <div className="w-screen h-16 flex justify-between px-2 bg-white shadow-lg z-30 fixed top-0 items-center">
       {/* Logo */}
@@ -17,17 +45,15 @@ const NavBar = ({ path ,userId }) => {
       <li className="flex items-center md:w-96 w-60 justify-evenly">
         <NavLink
           to="/"
-          className={` p-2 w-24 font-medium ${
-            path === "/" && "text-blue-700 rounded-lg bg-blue-200  text-center"
-          }`}
+          className={` p-2 w-24 font-medium ${path === "/" && "text-blue-700 rounded-lg bg-blue-200  text-center"
+            }`}
         >
           Home
         </NavLink>
         <NavLink
-          className={`p-2 w-24 font-medium ${
-            path === "/addblog" &&
+          className={`p-2 w-24 font-medium ${path === "/addblog" &&
             "text-blue-700 rounded-lg bg-blue-200  text-center"
-          }`}
+            }`}
           to="/addblog"
         >
           Add Blog
@@ -44,7 +70,13 @@ const NavBar = ({ path ,userId }) => {
               setShowDropdown(!showDropdown);
             }}
           >
-            <img src="" alt="" />
+            {
+              ProfileData?.profileSrc ? <img className="w-full h-full rounded-full" src={ProfileData?.profileSrc} alt="" /> :
+                <div style={{ backgroundColor: ProfileColor }} className="w-full h-full rounded-full flex justify-center items-center font-bold capitalize">
+                  {UserIframe}
+                </div>
+            }
+
           </button>
 
           {showDropdown && (
