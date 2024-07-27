@@ -1,6 +1,7 @@
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AddBlog from "./Components/Main/AddBlog";
+import FollowersList from "./Components/Main/FollowersList";
 import Home from "./Components/Main/Home";
 import Login from "./Components/Main/Login";
 import Profile from "./Components/Main/Profile";
@@ -23,7 +24,8 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/addblog" element={<AddBlog />} />
             <Route path="/viewblog/:id" element={<ViewBlog />} />
-            <Route path="/profile" element={<Profile/>}/>
+            <Route path="/profile/:userId" element={<Profile/>}/>
+            <Route path="/followers/:userId" element={<FollowersList/>}/>
           </Route>
           {/* Protected Wrapper ends */}
 

@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
   profileSrc: {
     type: String,
+    require:true
   },
   first_name: {
     type: String,
@@ -25,6 +26,19 @@ const userSchema = new mongoose.Schema({
       ref: "BlogModel", // refers blog model name "BlogModel"
     },
   ],
+  followings: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "userModel"
+    }
+  ],
+
+  followers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "userModel"
+    }
+  ]
 });
 
 // creating the user model
