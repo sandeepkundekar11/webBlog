@@ -1,3 +1,4 @@
+import JoditEditor from 'jodit-react';
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +10,7 @@ import { addBlogApiCall } from "../../Redux/Actions/AddblogAction";
 const AddBlog = () => {
   const Dispatch = useDispatch();
   const navigate = useNavigate();
+  const editor = useRef(null);
   const { addBlogLoading, addBlogMessage, addBlogError } = useSelector(
     (state) => state.addBlog
   );
@@ -183,14 +185,21 @@ const AddBlog = () => {
             {/* blog body (content) */}
             <div className="Content">
               <p className="text-lg font-medium mt-3 pb-2"> Content</p>
-              <textarea
+              {/* <textarea
                 rows={5}
                 onChange={HandleBlogInput}
                 placeholder="Type your blog"
                 name="content"
                 id=""
                 className=" outline-none w-full border-2 pl-3 p-2 focus:border-blue-500"
-              ></textarea>
+              ></textarea> */}
+              <JoditEditor ref={editor} value={Blog.content} onChange={(newContent) => {
+                setBlog({
+                  ...Blog,
+                  content: newContent
+                })
+              }
+              }/>
               {/* content warning */}
               <div className="w-full flex justify-between">
                 <p className="text-sm text-red-500 font-medium">
