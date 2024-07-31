@@ -1,3 +1,4 @@
+import DOMPurify from "dompurify";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -19,6 +20,7 @@ import {
   GetAllLikesApiCall,
 } from "../../Redux/Actions/GetCommentsAndLikesAction";
 import ManageBlogPopup from "../ManageBlogPopup";
+import UpdateBlogPopup from "../UpdateBlogPopup";
 const ViewBlog = () => {
   const navigate = useNavigate();
   const [userId, setUserId] = useState();
@@ -159,6 +161,7 @@ const ViewBlog = () => {
     Dispatch(GetAllLikesApiCall(id));
   };
 
+  const [ShowUpdateBlog, setShowUpdateBlog] = useState(false)
   // manage blog popup logic
   const [openManagePopup, setOpenManagePopup] = useState(false);
   const { DeletedBlogMessage, DeleteBlogLoading } = useSelector(
@@ -174,10 +177,10 @@ const ViewBlog = () => {
     let blogAuthorId = viewBlog?.author?._id;
     // calling the follow unfollw api
     Dispatch(followUnfollowApiCall(followerId, blogAuthorId, successToaster))
-    setTimeout(()=>{
-     // calling the api getBlogById
-    Dispatch(getBlogByIdApiCall(id));
-    },500)
+    setTimeout(() => {
+      // calling the api getBlogById
+      Dispatch(getBlogByIdApiCall(id));
+    }, 500)
   }
 
 
@@ -277,7 +280,7 @@ const ViewBlog = () => {
         </div>
 
         {/* Blog content */}
-        <p className="mt-4 text-xl">{viewBlog?.content}</p>
+        <p dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(viewBlog?.content)}} className="mt-4 text-xl"/>
 
         {/* bellow like comment share buttons container */}
 
@@ -408,7 +411,7 @@ const ViewBlog = () => {
         likesLoading ||
         blogLikesLoading ||
         DeleteBlogLoading ||
-         FollowUnfollowLoading) && <Loader />}
+        FollowUnfollowLoading) && <Loader />}
 
       {/* popup display */}
       {/* manage popup for managing the blog like delete the blog or update the blog */}
@@ -418,11 +421,37 @@ const ViewBlog = () => {
             setOpenManagePopup(false);
           }}
           onDelete={() => {
-            Dispatch(DeleteBlogApiCall(id, navigate,userId));
+            Dispatch(DeleteBlogApiCall(id, navigate, userId));
           }}
-          onUpdate={() => { }}
+          onUpdate={() => {
+            setShowUpdateBlog(true)
+            setOpenManagePopup(false);
+           }}
         />
       )}
+
+
+      {/* UpdateBlog popup  */}
+
+      {
+        ShowUpdateBlog && <UpdateBlogPopup
+          Heading={viewBlog?.heading}
+          Content={viewBlog?.content}
+          // converting the Selected categories to value label formate
+          SelectedCategoriesArr={viewBlog?.categories.map((ele) => {
+            return {
+              value: ele,
+              label: ele
+            }
+          })}
+          ImageUrl={viewBlog?.image}
+          onCancel={() => {
+            setShowUpdateBlog(false)
+          }
+          }
+        />
+      }
+
     </div>
   );
 };

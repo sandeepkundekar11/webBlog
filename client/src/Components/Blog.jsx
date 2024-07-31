@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IframeLogic from "../Logic/UserLogic";
@@ -72,10 +73,12 @@ const Blog = ({
           );
         })}
       </div>
-      <div className="text-base font-normal p-2">
+      <div className="text-base font-normal p-2"  >
         {/* displaying the context  */}
         {/* if content is greater then 200 characters then reducing it to 200 characters */}
-        {content.substring(0, 200)}{" "}
+        {/* {content}{" "} */}
+        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content.substring(0,100)) }}/>
+        
         {/* see more this button Navigates to View blogpage */}
         <button
           className="w-32 text-blue-600 h-auto p-2 bg-transparent hover:bg-slate-200 rounded-2xl"

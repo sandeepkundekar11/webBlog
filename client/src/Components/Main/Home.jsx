@@ -4,12 +4,17 @@ import { useNavigate } from "react-router-dom";
 import SearchImg from "../../Images/SearchBar.png";
 import { GetAllBlogsApiCall } from "../../Redux/Actions/GetAllBlogsAction";
 import Loader from "../../helperComponents/Loader";
+import PaginationComponent from "../../helperComponents/PaginationComponent";
 import SearchBlogBox from "../../helperComponents/SearchBlogBox";
 import Blog from "../Blog";
 const Home = () => {
   const Dispatch = useDispatch();
   const Navigate = useNavigate();
 
+  const [Pagination, setPagination] = useState({
+    start: 1,
+    end: 4
+  })
   // searched blog
   const [SearchedBlog, setSearchBlog] = useState("")
   // getting all blog loader and Allblogs
@@ -25,6 +30,9 @@ const Home = () => {
   // show dropdown state
   const [ShowDropdown, setShowDropdown] = useState(false)
 
+  // setting filtered blog
+  const [FilteredBlogs, setFilteredBlogs] = useState([])
+
   useEffect(() => {
     // dispatching GetAllBlog api Function from GetAll blog action file
     Dispatch(GetAllBlogsApiCall());
@@ -34,6 +42,8 @@ const Home = () => {
   useEffect(() => {
     // getting and storing in to the setBlogs State
     setBlogs(Allblogs);
+    // for initial time pushing all the blogs to filter array
+    setFilteredBlogs(Allblogs)
 
     // getting all the categories and removing duplicate categories for it using filter
     let categories = Allblogs?.reduce((acc, curr) => {
@@ -51,6 +61,54 @@ const Home = () => {
 
 
   }, [Allblogs]);
+
+
+  // defining the function for onCategoriesClick
+
+  const onCategoriesClick = (ele) => {
+    // defining one temporary array 
+    let newSelectedCategories;
+    if (SelectedCategories.includes(ele.category)) {
+      // checking that selected category is already present in SelectedCategoriesArr then we remove and from 
+      // selectedCategories Array and store in temporary variable else we add the category
+      newSelectedCategories = SelectedCategories.filter((cat) => {
+        return cat !== ele?.category
+      })
+    }
+    else {
+      // adding category
+      newSelectedCategories = [...SelectedCategories, ele?.category]
+    }
+
+    // setting the blog categoriesArrary  and if selectedCategories array contains blog category then return selected true 
+    // to that blog category and based on that category we are changing the category color
+    setBlogCategories((arr) => {
+      return arr.map((cat) => {
+        return {
+          category: cat?.category,
+          selected: newSelectedCategories.includes(cat?.category) ? true : false
+        }
+      })
+    })
+
+
+    // Filtering All the blogs based on the Selected Categories
+    let filterArr = blogs?.filter((ele) => {
+      // return the blogs which is being selected
+      if (ele?.categories.some((cat) => newSelectedCategories.includes(cat)) || newSelectedCategories.length === 0) {
+        return ele
+      }
+    })
+    //  setting that temporary category to the SelectedCategories array
+    setSelectedCategories(newSelectedCategories)
+    // while filtering retuning to the home first pagination page
+    setPagination({
+      start: 1,
+      end: 4
+    })
+    setFilteredBlogs(filterArr)
+  }
+
 
 
 
@@ -131,35 +189,7 @@ const Home = () => {
                     if (index + 1 < CategoryCount) {
                       return (
                         <div
-                          onClick={() => {
-                            // defining one temporary array 
-                            let newSelectedCategories;
-                            if (SelectedCategories.includes(ele.category)) {
-                              // checking that selected category is already present in SelectedCategoriesArr then we remove and from 
-                              // selectedCategories Array and store in temporary variable else we add the category
-                              newSelectedCategories = SelectedCategories.filter((cat) => {
-                                return cat !== ele?.category
-                              })
-                            }
-                            else {
-                              // adding category
-                              newSelectedCategories = [...SelectedCategories, ele?.category]
-                            }
-
-                            // setting the blog categoriesArrary  and if selectedCategories array contains blog category then return selected true 
-                            // to that blog category and based on that category we are changing the category color
-                            setBlogCategories((arr) => {
-                              return arr.map((cat) => {
-                                return {
-                                  category: cat?.category,
-                                  selected: newSelectedCategories.includes(cat?.category) ? true : false
-                                }
-                              })
-                            })
-                            //  setting that temporary category to the SelectedCategories array
-                            setSelectedCategories(newSelectedCategories)
-                          }
-                          }
+                          onClick={() => onCategoriesClick(ele)}
                           key={index}
                           className={`w-24 h-8 hover:bg-blue-500 hover:text-white  rounded-md text-blue-600 text-sm  font-medium
                           m-1 flex justify-center cursor-pointer items-center text-center ${ele?.selected ? "bg-blue-500 text-white" : "bg-gray-100"}`}
@@ -173,7 +203,7 @@ const Home = () => {
                 }
                 {/* category show hide button */}
                 <button className=" flex items-end text-blue-300 h-8 text-lg font-medium ml-3" onClick={() => {
-                  CategoryCount === 4 ? setCategoryCount(BlogCategories.length+1) : setCategoryCount(4)
+                  CategoryCount === 4 ? setCategoryCount(BlogCategories.length + 1) : setCategoryCount(4)
                 }
                 }>
                   {CategoryCount === 4 ? `+${BlogCategories?.length - CategoryCount}` : "See less..."}
@@ -186,48 +216,54 @@ const Home = () => {
       </div>
 
       {/*  All blogs will be displayed here */}
-      <div className="xl:w-2/4 md:w-4/5 w-full m-auto flex flex-col-reverse overflow-y-hidden">
-        {
-          // mapping all the blogs and setting the properties
-          blogs?.filter((ele) => {
-            // return the blogs which is being selected
-            if (ele?.categories.some((cat) => SelectedCategories.includes(cat)) || SelectedCategories.length === 0) {
-              return ele
-            }
-          })?.map((ele, index) => {
-            return (
-              <Blog
-                key={index}
-                Title={ele?.heading}
-                Categories={ele?.categories}
-                content={ele?.content}
-                name={`${ele?.author?.first_name} ${ele?.author?.last_name}`}
-                ViewBlog={() => {
-                  Navigate(`/viewblog/${ele?._id}`);
-                }}
-                userEmail={ele?.author.email}
-                isAuthor={ele?.author?._id}
-                profileSrc={ele?.author?.profileSrc}
-              />
-            );
+      <PaginationComponent paginationArr={FilteredBlogs} HandlePage={(page) => {
+        const itemsPerPage = 4; // Number of items per page
+        const start = page * itemsPerPage; // Calculate the start index for the current page
+        const end = start + itemsPerPage;
+        setPagination({
+          start: start,
+          end: end
+        })
+      }} currPageCount={Pagination.end / 4}
+        nextPage={(page) => {
+          setPagination({
+            start: Pagination.start + 4,
+            end: Pagination.end + 4
+          })
+        }}
+        prePage={(page) => {
+          setPagination({
+            start: Pagination.start - 4,
+            end: Pagination.end - 4
           })
         }
-      </div>
+        }>
+        <div className="xl:w-2/4 md:w-4/5 w-full m-auto  overflow-y-hidden">
+          {
+            // mapping all the blogs and setting the properties
+            FilteredBlogs?.map((ele, index) => {
+              if (Pagination.start <= index + 1 && Pagination.end >= index + 1) {
+                return (
+                  <Blog
+                    key={index}
+                    Title={ele?.heading}
+                    Categories={ele?.categories}
+                    content={ele?.content}
+                    name={`${ele?.author?.first_name} ${ele?.author?.last_name}`}
+                    ViewBlog={() => {
+                      Navigate(`/viewblog/${ele?._id}`);
+                    }}
+                    userEmail={ele?.author.email}
+                    isAuthor={ele?.author?._id}
+                    profileSrc={ele?.author?.profileSrc}
+                  />
+                );
+              }
 
-      {/* pagination  container */}
-      <div className="flex xl:w-2/4 md:w-4/5 w-full m-auto overflow-y-hidden mb-12">
-        {[1, 2, 3, 4, 5].map((ele, index) => {
-          return (
-            <div
-              className="w-12 h-12 flex justify-center items-center border m-2 hover:bg-blue-500"
-              key={index}
-            >
-              {ele}
-            </div>
-          );
-        })}
-      </div>
-
+            })
+          }
+        </div>
+      </PaginationComponent>
       {
         // adding the loader
         BlogsLoading && <Loader />
