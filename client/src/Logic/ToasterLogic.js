@@ -2,14 +2,14 @@ import { toast } from "react-toastify";
 
 const ToasterLogic = () => {
   const successToaster=(message) => toast.success(message, {
-    position: "bottom-right",
+    position: "top-center",
     autoClose: 5000,
-    hideProgressBar: false,
+    newestOnTo:false,
+    hideProgressBar:true,
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
-    progress: undefined,
-    theme: "light",
+    theme:"dark"
   });
 
   const errorToaster=(message)=>toast.error(message, {

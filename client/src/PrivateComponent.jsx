@@ -42,16 +42,17 @@ const PrivateComponent = () => {
           <NavBar path={path} userId={UserId} />
           <Outlet />
           <ToastContainer
-            position="bottom-right"
+            position="top-center"
             autoClose={5000}
-            hideProgressBar={false}
+            hideProgressBar={true}
             newestOnTop={false}
             closeOnClick
             rtl={false}
             pauseOnFocusLoss
             draggable
             pauseOnHover
-            theme="light"/>
+            theme="dark"
+            />
         </>
       ) : (
         // if user is not authenticated then Directaly Navigate to Login page to login the user

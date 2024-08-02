@@ -20,6 +20,7 @@ import {
   GetAllLikesApiCall,
 } from "../../Redux/Actions/GetCommentsAndLikesAction";
 import ManageBlogPopup from "../ManageBlogPopup";
+import ViewProfileSkeleton from "../SkeletonComponents/ViewProfileSkeleton";
 import UpdateBlogPopup from "../UpdateBlogPopup";
 const ViewBlog = () => {
   const navigate = useNavigate();
@@ -183,7 +184,11 @@ const ViewBlog = () => {
     }, 500)
   }
 
-
+  if (blogLoading || blogData === null) {
+    return (
+      <ViewProfileSkeleton />
+    )
+  }
 
   return (
     <div className="h-full w-full pt-20 pb-10">
@@ -280,7 +285,7 @@ const ViewBlog = () => {
         </div>
 
         {/* Blog content */}
-        <p dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(viewBlog?.content)}} className="mt-4 text-xl"/>
+        <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(viewBlog?.content) }} className="mt-4 text-xl" />
 
         {/* bellow like comment share buttons container */}
 
@@ -426,7 +431,7 @@ const ViewBlog = () => {
           onUpdate={() => {
             setShowUpdateBlog(true)
             setOpenManagePopup(false);
-           }}
+          }}
         />
       )}
 
@@ -444,7 +449,7 @@ const ViewBlog = () => {
               label: ele
             }
           })}
-          ImageUrl={viewBlog?.image}
+          ImageUrl={viewBlog?.image || null}
           onCancel={() => {
             setShowUpdateBlog(false)
           }
