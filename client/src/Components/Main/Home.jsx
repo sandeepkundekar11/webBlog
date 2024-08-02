@@ -221,7 +221,7 @@ const Home = () => {
         const start = page * itemsPerPage; // Calculate the start index for the current page
         const end = start + itemsPerPage;
         setPagination({
-          start: start,
+          start: start+1,
           end: end
         })
       }} currPageCount={Pagination.end / 4}

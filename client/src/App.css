@@ -56,6 +56,7 @@
 }
 
 @media (max-width: 768px) {
+
   .addSubContainer,
   .ProfileSubContainer {
     width: 95%;
@@ -88,10 +89,10 @@
 }
 
 /* styling the update blog */
-.UpdateBlogPopup
-{
+.UpdateBlogPopup {
   width: 900px;
   max-height: 90vh;
+  overflow: scroll;
   min-height: 60vh;
   border-radius: 8px;
   background-color: white;
@@ -99,26 +100,53 @@
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
     rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
-.updateBlogImage
-{
+
+.updateBlogImage {
   /* border: 2.22px dashed #000000 !important; */
-  	/* padding: 10px 44px !important; */
+  /* padding: 10px 44px !important; */
 }
+
 /* styling blogSearchBar */
-.blogSearchBar::-webkit-scrollbar {
-  width: 7px; /* Set the width of the scrollbar */
-  height: 2px; /* Set the height of the scrollbar (for horizontal scrollbars) */
+.blogSearchBar::-webkit-scrollbar,
+.UpdateBlogPopup::-webkit-scrollbar {
+  width: 7px;
+  /* Set the width of the scrollbar */
+  height: 2px;
+  /* Set the height of the scrollbar (for horizontal scrollbars) */
 }
 
 /* Style the track of the scrollbar */
-.blogSearchBar::-webkit-scrollbar-track {
-  background-color: #f1f1f1; /* Background color of the track */
-  border-radius: 10px; /* Rounded corners for the track */
+.blogSearchBar::-webkit-scrollbar-track,
+.UpdateBlogPopup::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  /* Background color of the track */
+  border-radius: 10px;
+  /* Rounded corners for the track */
 }
 
 /* Style the scrollbar thumb (the draggable part) */
-.blogSearchBar::-webkit-scrollbar-thumb {
-  background-color: gray; /* Color of the scrollbar thumb */
-  border-radius: 10px; /* Rounded corners for the thumb */
-  border: 2px solid transparent; /* Add a border to give spacing between thumb and track */
+.blogSearchBar::-webkit-scrollbar-thumb,
+.UpdateBlogPopup::-webkit-scrollbar-thumb {
+  background-color: gray;
+  /* Color of the scrollbar thumb */
+  border-radius: 10px;
+  /* Rounded corners for the thumb */
+  border: 2px solid transparent;
+  /* Add a border to give spacing between thumb and track */
+}
+
+
+/*  */
+/* Target the main editor container */
+.jodit-container {
+  border: none !important;
+}
+
+.jodit-status-bar {
+  display: none !important;
+  border: none !important;
+}
+
+.jodit-toolbar-button_size_large button {
+  font-size: 30px !important;
 }

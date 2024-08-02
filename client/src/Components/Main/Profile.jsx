@@ -255,7 +255,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      {(ProfileLoading || UpdateProfileLoading || FollowUnfollowLoading) && <Loader />}
+      {( UpdateProfileLoading || FollowUnfollowLoading) && <Loader />}
 
       {/* update profile popup */}
       {showUpdatePopup && (
