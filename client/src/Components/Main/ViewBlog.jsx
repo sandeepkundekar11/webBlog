@@ -19,6 +19,7 @@ import {
   getAllCommentApiCall,
   GetAllLikesApiCall,
 } from "../../Redux/Actions/GetCommentsAndLikesAction";
+import { UpdateBlogApiCall } from "../../Redux/Actions/UpdateBlogAction";
 import ManageBlogPopup from "../ManageBlogPopup";
 import ViewProfileSkeleton from "../SkeletonComponents/ViewProfileSkeleton";
 import UpdateBlogPopup from "../UpdateBlogPopup";
@@ -184,7 +185,11 @@ const ViewBlog = () => {
     }, 500)
   }
 
-  if (blogLoading || blogData === null) {
+  // Update Blog states
+
+  const { UpdateBlogLoading } = useSelector((state) => state.UpadteBlogInfo)
+
+  if (blogLoading || blogData === null || UpdateBlogLoading) {
     return (
       <ViewProfileSkeleton />
     )
@@ -452,6 +457,18 @@ const ViewBlog = () => {
           ImageUrl={viewBlog?.image || null}
           onCancel={() => {
             setShowUpdateBlog(false)
+          }
+          }
+          blogId={id}
+          UpdateBlogFun={(data) => {
+            Dispatch(UpdateBlogApiCall(id, data, successToaster))
+            //  hiding update blog popup
+            setShowUpdateBlog(false)
+            // calling the api getBlogById // get blog
+            setTimeout(() => {
+              // calling the api getBlogById
+              Dispatch(getBlogByIdApiCall(id));
+            }, 500)
           }
           }
         />

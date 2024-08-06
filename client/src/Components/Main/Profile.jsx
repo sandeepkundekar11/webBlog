@@ -74,8 +74,6 @@ const Profile = () => {
     formData.append("bio", updatedData?.bio);
     formData.append("profile", updatedData?.profileSrc);
 
-    console.log(updatedData, "updatedData");
-
     Dispatch(updateProfileApiCall(formData, successToaster));
     // calling the get profile api
 

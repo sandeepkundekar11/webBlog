@@ -7,6 +7,7 @@ const UpdateProfile = AsyncHandler(async (req, res) => {
   let { first_name, last_name, bio, email, profile } = req.body;
 
   try {
+    console.log(profile)
     // Fetch the current user data
     let presentUser = await userModel.findOne({ _id: req.userId });
 

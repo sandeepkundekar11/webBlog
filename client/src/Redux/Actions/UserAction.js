@@ -42,7 +42,6 @@ export const SignupCall = (userData, Navigate) => {
             })
 
             let data = await response.json()
-            console.log(data)
             if (data.user) {
                 // dispatching
                 Dispatch(join_User(data.user))

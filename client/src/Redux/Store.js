@@ -12,6 +12,7 @@ import { FollowUnFollowReducer } from "./Reducers/FollowAndUnfollowReducer";
 import { GetAllblogsReducer } from "./Reducers/GetAllBlogAction";
 import { GetBlogByIdReducer } from "./Reducers/GetBlogByIdReducer";
 import { GetFollowerFollowingReducer } from "./Reducers/GetFollowerandFollowingReducer";
+import { UpadteBlogReducer } from "./Reducers/UpdateBlogReducer";
 import { UpdateProfileReducer } from "./Reducers/UpdateProfileReducer";
 import { GetProfileReducer } from "./Reducers/UserProfileReducer";
 import { UserReducer } from "./Reducers/UserReducer";
@@ -29,7 +30,8 @@ const rootStore = combineReducers({
   deleteBlog: DeleBlogReducer,
   UpdateProfile: UpdateProfileReducer,
   followUnfollow: FollowUnFollowReducer,
-  getFollowingFollowerList: GetFollowerFollowingReducer
+  getFollowingFollowerList: GetFollowerFollowingReducer,
+  UpadteBlogInfo:UpadteBlogReducer
 });
 
 const store = createStore(rootStore, applyMiddleware(thunk));

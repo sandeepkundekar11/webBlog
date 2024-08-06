@@ -38,7 +38,6 @@ export const getLikesApiCall = (Post_id,success) => {
             })
 
             let data = await response.json()
-            console.log(data,"data")
             if (data.message) {
                 Dispatch(getLikesAction(data.message))
                 success(data.message)

@@ -19,9 +19,9 @@ const NavBar = ({ path, userId }) => {
 
   // calling  the getuser api
   useEffect(() => {
-    let userId = JSON.parse(localStorage.getItem("user"))?._id
+    let userID = JSON.parse(localStorage.getItem("user"))?._id
     // calling the get profile api
-    Dispatch(GetUserInfoApiCall(userId));
+    Dispatch(GetUserInfoApiCall(userID));
   }, [Dispatch]);
 
   // setting the user iframe and profile color

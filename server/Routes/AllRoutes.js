@@ -19,6 +19,7 @@ const { DeleteBlog } = require("../Controller/DeleteBlogController");
 const { UpdateProfile } = require("../Controller/UpdateProfileController");
 const { FollowUnFollow } = require("../Controller/FollowAndUnfollowController");
 const { GetAllFollowerAndFollowingList } = require("../Controller/GetAllFollowersAndFollowingList");
+const { UpdateBlog } = require("../Controller/UpdateBlogController");
 
 
 // connecting to mongodb database
@@ -142,4 +143,9 @@ Router.put("/followAndUnfollow/:followerId/:userId", Middleware, FollowUnFollow)
 // Defining the get follow and following list which Handles GET request
 // url http://localhost:8000/blog/followingAndFollowersList/:userId
 Router.get("/followingAndFollowersList/:userId", Middleware, GetAllFollowerAndFollowingList)
+
+
+// defining the update method which handles PUT request
+// url http://localhost:8000/blog/updateBlog/:id
+Router.put("/updateBlog/:id", Middleware, blogUpload.single("blog"), UpdateBlog)
 module.exports = { Router };

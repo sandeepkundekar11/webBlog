@@ -32,6 +32,8 @@ const PrivateComponent = () => {
       // and if token is not present then user is authenticated
       setAuthenticated(false);
     }
+
+    
   }, []);
   return (
     <div>

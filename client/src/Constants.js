@@ -86,5 +86,5 @@ export const editorConfig = {
     'align',       // Text alignment
   ],
   textIcons: false,
-  placeholder: 'Write your post here....' || "" // Placeholder text
+  placeholder: ""
 };

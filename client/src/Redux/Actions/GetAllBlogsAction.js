@@ -38,7 +38,6 @@ export const GetAllBlogsApiCall = () => {
                 }
             })
             let data = await response.json()
-            // console.log(data)
             if (data.blogs) {
                 // dispatching GetAllBlog  Action
                 Dispatch(GetAllBlogsAction(data.blogs))

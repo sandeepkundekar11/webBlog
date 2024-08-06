@@ -44,7 +44,6 @@ export const addBlogApiCall = (blog, navigate, id) => {
       });
 
       let data = await response.json();
-      console.log(data);
       if (data.message) {
         // dispatching the Add blog action
         Dispatch(addBlogAction(data.message));
