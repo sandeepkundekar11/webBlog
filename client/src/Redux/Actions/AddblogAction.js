@@ -1,3 +1,5 @@
+import { BASE_URL } from "../../Constants";
+
 export const ADD_BLOG_REQUEST = "ADD_BLOG_REQUEST";
 export const ADD_BLOG = "ADD_BLOG";
 export const ADD_BLOG_ERROR = "ADD_BLOG_ERR";
@@ -35,7 +37,7 @@ export const addBlogApiCall = (blog, navigate, id) => {
 
       let token = localStorage.getItem("token");
       // calling the add blog api
-      let response = await fetch("http://localhost:8000/blog/addBlog", {
+      let response = await fetch(`${BASE_URL}/blog/addBlog`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

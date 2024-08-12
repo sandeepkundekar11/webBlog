@@ -13,6 +13,7 @@ import IframeLogic from "../../Logic/UserLogic";
 import { addCommentApiCall } from "../../Redux/Actions/AddCommentAction";
 import { getLikesApiCall } from "../../Redux/Actions/AddLikeAction";
 import { DeleteBlogApiCall } from "../../Redux/Actions/DeleteBlogAction";
+import { DeleteCommentApiCall } from "../../Redux/Actions/DeleteCommentAction";
 import { followUnfollowApiCall } from "../../Redux/Actions/FollowAndUnfollowAction";
 import { getBlogByIdApiCall } from "../../Redux/Actions/GetBlogByIdAction";
 import {
@@ -82,9 +83,18 @@ const ViewBlog = () => {
     // getting all the blog comments
     Dispatch(getAllCommentApiCall(id));
     // calling the api getBlogById
-    Dispatch(getBlogByIdApiCall(id));
+    Dispatch(getBlogByIdApiCall(id,navigate));
+   
   }, [Dispatch, id]);
 
+  useEffect(()=>
+  {
+    console.log(blogData)
+    if(blogData===null)
+    {
+      // navigate("/noBlog")
+    }
+  },[blogData])
   useEffect(() => {
     // here we are rotating the comments array so that alway user will see lateast comments
     let RotatedArr = [];
@@ -181,7 +191,7 @@ const ViewBlog = () => {
     Dispatch(followUnfollowApiCall(followerId, blogAuthorId, successToaster))
     setTimeout(() => {
       // calling the api getBlogById
-      Dispatch(getBlogByIdApiCall(id));
+      Dispatch(getBlogByIdApiCall(id,navigate));
     }, 500)
   }
 
@@ -189,8 +199,12 @@ const ViewBlog = () => {
 
   const { UpdateBlogLoading } = useSelector((state) => state.UpadteBlogInfo)
 
-  if (blogLoading || blogData === null || UpdateBlogLoading) {
+  // Delete Comments states
+  const { DeleteCommentLoading } = useSelector((state) => state.DeleteComment)
+
+  if (blogLoading || blogData === null || UpdateBlogLoading || DeleteCommentLoading) {
     return (
+      // showing the Skeleton loading
       <ViewProfileSkeleton />
     )
   }
@@ -381,6 +395,14 @@ const ViewBlog = () => {
                     commentText={ele?.content}
                     profileSrc={ele?.author?.profileSrc}
                     commentAuthorId={ele?.author?._id}
+                    OnDelete={() => {
+                      // delete blog
+                      Dispatch(DeleteCommentApiCall(id, ele?._id, successToaster))
+                      setTimeout(() => {
+                        // getting all the blog comments
+                        Dispatch(getAllCommentApiCall(id));
+                      }, 300)
+                    }}
                   />
                 );
               }
@@ -467,7 +489,7 @@ const ViewBlog = () => {
             // calling the api getBlogById // get blog
             setTimeout(() => {
               // calling the api getBlogById
-              Dispatch(getBlogByIdApiCall(id));
+              Dispatch(getBlogByIdApiCall(id,navigate));
             }, 500)
           }
           }

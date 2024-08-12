@@ -8,6 +8,10 @@
   height: 600px;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 .joinUserBox {
   background-image: linear-gradient(#355ead, #aa00fa);
 }
@@ -149,4 +153,10 @@
 
 .jodit-toolbar-button_size_large button {
   font-size: 30px !important;
+}
+
+/* delete profile popup  */
+.DeleteProfilePopup {
+  width: 450px;
+  height: 400px;
 }

@@ -1,3 +1,5 @@
+import { BASE_URL } from "../../Constants"
+
 export const UPDATEBLOG_REQUEST = "UPDATE_BLOG_REQUEST"
 export const UPDATEBLOG = "UPDATE_BLOG"
 export const UPDATE_BLOG_ERROR = "UPDATE_BLOG_ERROR"
@@ -31,7 +33,7 @@ export const UpdateBlogApiCall = (blogId, formData, successToaster) => {
         try {
             Dispatch(UpdateBlogRequestAction())
             let token = localStorage.getItem("token")
-            let response = await fetch(`http://localhost:8000/blog/updateBlog/${blogId}`, {
+            let response = await fetch(`${BASE_URL}/blog/updateBlog/${blogId}`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token} `

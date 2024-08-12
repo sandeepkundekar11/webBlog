@@ -13,7 +13,7 @@ const UpdateProfile = AsyncHandler(async (req, res) => {
 
     // Determine the new profileSrc if a new file was uploaded
     const profileSrc = req.file
-      ? `http://localhost:8000/${req.file.filename}`
+      ? `${process.env.BASE_URL}/${req.file.filename}`
       : profile;
     // when we are upading the image that time till will remove previous image if it is present
     if (presentUser.profileSrc !== profileSrc && presentUser.profileSrc && profileSrc!=="null" && profileSrc!==null && profileSrc!==undefined &&profileSrc!=="undefined" ) {

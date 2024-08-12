@@ -1,3 +1,5 @@
+import { BASE_URL } from "../../Constants"
+
 export const GET_LIKES = "GET_LIKES"
 export const GET_LIKE_REQUEST = "GET_LIKES_REQUEST"
 export const GET_LIKES_ERROR = "GET_LIKES_ERROR"
@@ -29,7 +31,7 @@ export const getLikesApiCall = (Post_id,success) => {
         Dispatch(getLikesLoadingAction())
         let token = localStorage.getItem("token")
         try {
-            let response = await fetch(`http://localhost:8000/blog/likeDislike/${Post_id}`, {
+            let response = await fetch(`${BASE_URL}/blog/likeDislike/${Post_id}`, {
                 method: "PUT",
                 headers: {
                     "Content-type": "application/json",

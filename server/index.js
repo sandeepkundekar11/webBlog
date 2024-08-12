@@ -24,6 +24,5 @@ App.use(express.json());
 App.use("/blog", Router);
 
 App.listen(PORT, () => {
-  console.log(`server is running on ${PORT}`);
-  console.log(`blog images will be stored in this path ${blogFolderPath}`);
+  console.log(`server is running on ${process.env.BASE_URL}`)
 });

@@ -1,3 +1,5 @@
+import { BASE_URL } from "../../Constants";
+
 export const REQUEST_USER = "REQUEST_USER";
 export const JOIN_USER = "JOIN_USER";
 export const USER_ERROR = "USER_ERROR"
@@ -33,7 +35,7 @@ export const SignupCall = (userData, Navigate) => {
         Dispatch(RequestUser())
         try {
             // calling Signup Api
-            let response = await fetch("http://localhost:8000/blog/signup", {
+            let response = await fetch(`${BASE_URL}/blog/signup`, {
                 method: "POST",
                 headers: {
                     "content-type": "application/json"
@@ -69,7 +71,7 @@ export const LoginCall = (UserData, Navigate) => {
         Dispatch(RequestUser())
         try {
             // calling login api
-            let response = await fetch("http://localhost:8000/blog/login", {
+            let response = await fetch(`${BASE_URL}/blog/login`, {
                 method: "POST",
                 headers: {
                     "content-type": "application/json"

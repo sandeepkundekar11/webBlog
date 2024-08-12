@@ -51,7 +51,7 @@ const Login = () => {
     };
     //  checking that user entered input or not
     // checking email
-    if (UserData.email.length < 6) {
+    if (UserData.email.length <= 5) {
       newWarnings.emailWarning = "Email can't be less the 5 characters";
     } else {
       newWarnings.emailWarning = "";
@@ -59,7 +59,7 @@ const Login = () => {
 
     // checking password
 
-    if (UserData.password.length < 6) {
+    if (UserData.password.length <= 5) {
       newWarnings.passwordWarning = "Password can't be less then 5 characters";
     } else {
       newWarnings.passwordWarning = "";
@@ -89,7 +89,7 @@ const Login = () => {
             type="email"
             placeholder="Email Address"
             onChange={HandleInput}
-            className="w-11/12 h-9 mt-3 rounded-md outline-none pl-2 bg-transparent border border-gray-600"
+            className="w-11/12 h-9 mt-3 rounded-md outline-none pl-2 bg-white border border-gray-600"
             name="email"
             id=""
           />

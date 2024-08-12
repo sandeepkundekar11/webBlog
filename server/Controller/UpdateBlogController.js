@@ -10,7 +10,6 @@ const UpdateBlog = AsyncHandler(async (req, res) => {
         let blogId = req.params.id
         let existingImag = await BlogModel.findOne({ _id: blogId })
         let imageFromDatabase = existingImag.image?.split("/")[3]
-        console.log(existingImag.image,"existingImag.imag",blog,"blog")
         let image;
         // not updated image
         if (existingImag.image !== null && blog !== null) {
@@ -46,12 +45,12 @@ const UpdateBlog = AsyncHandler(async (req, res) => {
                 return res.json({ message: error.message });
             }
        
-            image = `http://localhost:8000/${req.file.filename}`
+            image = `${process.env.BASE_URL}/${req.file.filename}`
         }
 
         // add new Image
         if (existingImag.image === null && !blog) {
-            image = `http://localhost:8000/${req.file.filename}`
+            image = `${process.env.BASE_URL}/${req.file.filename}`
         }
         let updatedBlog = await BlogModel.updateOne({ _id: blogId }, {
             $set: {

@@ -20,6 +20,8 @@ const { UpdateProfile } = require("../Controller/UpdateProfileController");
 const { FollowUnFollow } = require("../Controller/FollowAndUnfollowController");
 const { GetAllFollowerAndFollowingList } = require("../Controller/GetAllFollowersAndFollowingList");
 const { UpdateBlog } = require("../Controller/UpdateBlogController");
+const { DeleteComment } = require("../Controller/DeleteCommentController");
+const { DeleteAccount } = require("../Controller/DeleteAccount");
 
 
 // connecting to mongodb database
@@ -148,4 +150,14 @@ Router.get("/followingAndFollowersList/:userId", Middleware, GetAllFollowerAndFo
 // defining the update method which handles PUT request
 // url http://localhost:8000/blog/updateBlog/:id
 Router.put("/updateBlog/:id", Middleware, blogUpload.single("blog"), UpdateBlog)
+
+// defining the Delete Comment Api
+// url http://localhost:8000/blog/DeleteComment?BlogId={blogId}&CommentId={CommentIdTOBeDelete}
+Router.delete("/DeleteComment",Middleware,DeleteComment)
+
+// Defining the api to delete the user
+// url http://localhost:8000/blog/deleteProfile
+Router.delete("/deleteProfile",Middleware,DeleteAccount)
+
+
 module.exports = { Router };

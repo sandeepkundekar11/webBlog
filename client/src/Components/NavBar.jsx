@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import UserLogic from "../Logic/UserLogic";
-import { GetUserInfoApiCall } from "../Redux/Actions/UserProfileAction";
 
 const NavBar = ({ path, userId }) => {
-  const Dispatch = useDispatch()
   const [showDropdown, setShowDropdown] = useState(false);
   const { GetIframeColor, GetUserIcon } = UserLogic()
   const Navigate = useNavigate();
@@ -14,15 +12,11 @@ const NavBar = ({ path, userId }) => {
   //  state to store the user profile color
   const [ProfileColor, setProfileColor] = useState()
 
-  // getting user data
-  const { ProfileData } = useSelector((state) => state.UserInfo)
+  //  user data state
 
-  // calling  the getuser api
-  useEffect(() => {
-    let userID = JSON.parse(localStorage.getItem("user"))?._id
-    // calling the get profile api
-    Dispatch(GetUserInfoApiCall(userID));
-  }, [Dispatch]);
+
+  // const [ProfileData, setProfileData] = useState()
+  const { ProfileData } = useSelector((state) => state.ProfileImage)
 
   // setting the user iframe and profile color
   useEffect(() => {
@@ -82,6 +76,14 @@ const NavBar = ({ path, userId }) => {
           {showDropdown && (
             <ul className="profileDropdown w-24 h-20 bg-white z-30 absolute top-12 right-0 rounded-md shadow-2xl ">
               <p
+                className="font-medium cursor-pointer h-10 hover:bg-blue-300  py-2 px-2 rounded-md"
+                onClick={() => {
+                  Navigate(`/profile/${userId}`);
+                }}
+              >
+                Profile
+              </p>
+              <p
                 className="font-medium cursor-pointer h-10 py-2 px-2 hover:bg-blue-300 rounded-md"
                 onClick={() => {
                   localStorage.removeItem("token");
@@ -90,15 +92,6 @@ const NavBar = ({ path, userId }) => {
                 }}
               >
                 Logout
-              </p>
-
-              <p
-                className="font-medium cursor-pointer h-10 hover:bg-blue-300  py-2 px-2 rounded-md"
-                onClick={() => {
-                  Navigate(`/profile/${userId}`);
-                }}
-              >
-                Profile
               </p>
             </ul>
           )}

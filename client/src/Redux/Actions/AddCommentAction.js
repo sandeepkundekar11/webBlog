@@ -1,3 +1,5 @@
+import { BASE_URL } from "../../Constants";
+
 export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const ADD_COMMENT_ERROR = "ADD_COMMENT_ERROR";
@@ -24,13 +26,13 @@ const addCommentErrorAction = (err) => {
 
 // calling the Add Comment api
 
-export const addCommentApiCall = (PostId, comment,successToaster) => {
+export const addCommentApiCall = (PostId, comment, successToaster) => {
   return async (Dispatch) => {
     try {
       Dispatch(addCommentRequestAction());
       const token = localStorage.getItem("token");
       let response = await fetch(
-        `http://localhost:8000/blog/comment?id=${PostId}`,
+        `${BASE_URL}/blog/comment?id=${PostId}`,
         {
           method: "PUT",
           headers: {

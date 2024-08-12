@@ -54,16 +54,16 @@ const SignUp = () => {
       passwordWarning: "",
     };
     // checking first name
-    if (UserData.first_name.length < 6) {
-      newWarning.first_nameWarning = "Fist name can't be less the 5 characters";
+    if (UserData.first_name.length < 3) {
+      newWarning.first_nameWarning = "Fist name can't be less the 4 characters";
     } else {
       newWarning.first_nameWarning = "";
     }
 
     // checking last name
 
-    if (UserData.last_name.length < 6) {
-      newWarning.last_nameWarning = "last name can't be less then 5 characters";
+    if (UserData.last_name.length < 3) {
+      newWarning.last_nameWarning = "last name can't be less then 4 characters";
     } else {
       newWarning.last_nameWarning = "";
     }
@@ -77,7 +77,7 @@ const SignUp = () => {
     }
     // checking the Password
 
-    if (UserData.password.length < 6) {
+    if (UserData.password.length <= 5) {
       newWarning.passwordWarning = "Password can't be less then 5 characters";
     } else {
       newWarning.passwordWarning = "";
@@ -86,9 +86,8 @@ const SignUp = () => {
     // setting new warning to userData warning
     setUserDataWarning(newWarning);
 
-    if (Object.values(UserData).every((ele) => ele.length >= 6)) {
+    if (Object.values(UserData).every((ele) => ele.length >= 3)) {
       // call api
-      console.log(UserData, "sd");
       Dispatch(SignupCall(UserData, Navigate));
     }
   };
