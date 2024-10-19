@@ -7,6 +7,7 @@ import Loader from "../../helperComponents/Loader";
 import PaginationComponent from "../../helperComponents/PaginationComponent";
 import SearchBlogBox from "../../helperComponents/SearchBlogBox";
 import Blog from "../Blog";
+import HomePageSkeleton from "../SkeletonComponents/HomePageSkeleton";
 const Home = () => {
   const Dispatch = useDispatch();
   const Navigate = useNavigate();
@@ -110,7 +111,11 @@ const Home = () => {
   }
 
 
-
+  if (BlogsLoading || Allblogs === null) {
+    return (
+      <HomePageSkeleton />
+    )
+  }
 
   return (
     <div className="min-h-screen max-h-full w-full">
@@ -191,7 +196,7 @@ const Home = () => {
                         <div
                           onClick={() => onCategoriesClick(ele)}
                           key={index}
-                          className={`w-24 h-8 hover:bg-blue-500 hover:text-white  rounded-md text-blue-600 text-sm  font-medium
+                          className={`w-auto px-2 h-8 hover:bg-blue-500 hover:text-white  rounded-md text-blue-600 text-sm  font-medium
                           m-1 flex justify-center cursor-pointer items-center text-center ${ele?.selected ? "bg-blue-500 text-white" : "bg-gray-100"}`}
                         >
                           {ele?.category}
@@ -206,7 +211,9 @@ const Home = () => {
                   CategoryCount === 4 ? setCategoryCount(BlogCategories.length + 1) : setCategoryCount(4)
                 }
                 }>
-                  {CategoryCount === 4 ? `+${BlogCategories?.length - CategoryCount}` : "See less..."}
+                  {
+                    BlogCategories?.length >= 4 && (CategoryCount === 4 ? `+${BlogCategories?.length + 1 - CategoryCount}` : "See less...")
+                  }
                 </button>
               </div>
             </span>
@@ -221,7 +228,7 @@ const Home = () => {
         const start = page * itemsPerPage; // Calculate the start index for the current page
         const end = start + itemsPerPage;
         setPagination({
-          start: start+1,
+          start: start + 1,
           end: end
         })
       }} currPageCount={Pagination.end / 4}
@@ -261,6 +268,11 @@ const Home = () => {
               }
 
             })
+
+
+          }
+          {
+            FilteredBlogs?.length === 0 && <h1 className="text-center font-bold text-xl mt-3 text-gray-600">Blogs are not Available</h1>
           }
         </div>
       </PaginationComponent>

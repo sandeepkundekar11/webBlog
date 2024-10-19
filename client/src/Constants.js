@@ -1,17 +1,26 @@
 export const blogCategories = [
-  { value: "technology", label: "Technology" },
-  { value: "health", label: "Health" },
-  { value: "lifestyle", label: "Lifestyle" },
-  { value: "finance", label: "Finance" },
-  { value: "travel", label: "Travel" },
-  { value: "education", label: "Education" },
-  { value: "food", label: "Food" },
-  { value: "fashion", label: "Fashion" },
-  { value: "sports", label: "Sports" },
-  { value: "entertainment", label: "Entertainment" },
-  { value: "science", label: "Science" },
-  { value: "business", label: "Business" }
+  { value: "software-development", label: "Software Development" },
+  { value: "frontend-development", label: "Frontend Development" },
+  { value: "backend-development", label: "Backend Development" },
+  { value: "mobile-app-development", label: "Mobile App Development" },
+  { value: "devops", label: "DevOps" },
+  { value: "software-testing", label: "Software Testing & QA" },
+  { value: "programming-languages", label: "Programming Languages" },
+  { value: "web-development", label: "Web Development" },
+  { value: "data-science", label: "Data Science" },
+  { value: "machine-learning", label: "Machine Learning" },
+  { value: "artificial-intelligence", label: "Artificial Intelligence" },
+  { value: "big-data", label: "Big Data" },
+  { value: "cloud-computing", label: "Cloud Computing" },
+  { value: "cybersecurity", label: "Cybersecurity" },
+  { value: "networking", label: "Networking" },
+  { value: "it-infrastructure", label: "IT Infrastructure" },
+  { value: "blockchain", label: "Blockchain" },
+  { value: "augmented-reality", label: "Augmented Reality" },
+  { value: "virtual-reality", label: "Virtual Reality" },
+  { value: "iot", label: "Internet of Things (IoT)" }
 ];
+
 
 //   custom style
 
@@ -58,7 +67,7 @@ export const editorConfig = {
 
   toolbarButtonSize: 'large',
   readonly: false, // Enable editing
-     // Editor height
+  // Editor height
   removeButtons: ['video',
     'image',
     'video',
@@ -86,5 +95,8 @@ export const editorConfig = {
     'align',       // Text alignment
   ],
   textIcons: false,
-  placeholder: 'Write your post here....' || "" // Placeholder text
+  placeholder: ""
 };
+
+
+export const BASE_URL = "https://blogserver-7ymx.onrender.com"

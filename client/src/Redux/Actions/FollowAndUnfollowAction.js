@@ -1,3 +1,5 @@
+import { BASE_URL } from "../../Constants"
+
 export const FOLLOW_UNFOLLOW = "FOLLOW_UNFOLLOW"
 export const FOLLOW_UNFOLLOW_REQUEST = "FOLLOW_UNFOLLOW_REQUEST"
 export const FOLLOW_UNFOLLOW_ERROR = "FOLLOW_UNFOLLOW_ERRORS"
@@ -30,7 +32,7 @@ export const followUnfollowApiCall = (followerId, userId, successToster) => {
         try {
             Dispatch(followUnfollowRequestAction())
             let token = localStorage.getItem("token")
-            let response = await fetch(`http://localhost:8000/blog/followAndUnfollow/${followerId}/${userId}`, {
+            let response = await fetch(`${BASE_URL}/blog/followAndUnfollow/${followerId}/${userId}`, {
                 method: "PUT",
                 headers: {
                     "content-type": "application/json",

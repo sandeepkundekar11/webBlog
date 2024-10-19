@@ -1,3 +1,5 @@
+import { BASE_URL } from "../../Constants"
+
 // for Comments
 export const GET_ALL_COMMENT = "GET_ALL_COMMENTS"
 export const GET_ALL_COMMENT_REQUEST = "GET_ALL_COMMENT_REQUEST"
@@ -32,7 +34,7 @@ export const getAllCommentApiCall = (blogId) => {
         try {
             Dispatch(getAllCommentsRequestAction())
             let token = localStorage.getItem("token")
-            let response = await fetch(`http://localhost:8000/blog/getCommentAndLikes/${blogId}`, {
+            let response = await fetch(`${BASE_URL}/blog/getCommentAndLikes/${blogId}`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
@@ -93,7 +95,7 @@ export const GetAllLikesApiCall = (blog_id) => {
         Dispatch(getAllLikesRequestAction())
         let token = localStorage.getItem("token")
         try {
-            let response = await fetch(`http://localhost:8000/blog/getCommentAndLikes/${blog_id}`, {
+            let response = await fetch(`${BASE_URL}/blog/getCommentAndLikes/${blog_id}`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",

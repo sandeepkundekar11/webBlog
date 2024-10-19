@@ -50,7 +50,7 @@ const FollowersList = () => {
         Dispatch(GetUserInfoApiCall(userId));
         // calling the getFollowing and followers data
         Dispatch(GetFollowingFollowersApiCall(userId))
-    }, [Dispatch, userId]);
+    }, [Dispatch]);
 
     // following and unfollowing the user 
     const FollowUnfollow = (personToFollowUserId) => {

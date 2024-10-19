@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import DeleteProfilePopup from "../../helperComponents/DeleteProfilePopup";
 import Loader from "../../helperComponents/Loader";
 import ProfleBlog from "../../helperComponents/ProfleBlog";
 import ToasterLogic from "../../Logic/ToasterLogic";
 import UserLogic from "../../Logic/UserLogic";
 import { followUnfollowApiCall } from "../../Redux/Actions/FollowAndUnfollowAction";
+import { getProfileImageApiCall } from "../../Redux/Actions/ProfileImageAction";
 import { updateProfileApiCall } from "../../Redux/Actions/UpdateProfileAction";
 import { GetUserInfoApiCall } from "../../Redux/Actions/UserProfileAction";
+import ProfileSkeleton from "../SkeletonComponents/ProfileSkeleton";
 import UpdateProfilePopup from "../UpdateprofilePopup";
 const Profile = () => {
-
+  // delete user states
+  const { deleteUserLoading } = useSelector((state) => state.DeleteUser)
   const { userId } = useParams()
   // update profile message
   const { UpdateProfileMessage, UpdateProfileLoading } = useSelector(
@@ -39,7 +43,7 @@ const Profile = () => {
 
   useEffect(() => {
     // calling the get profile api
-    Dispatch(GetUserInfoApiCall(userId));
+    Dispatch(GetUserInfoApiCall(userId, Navigate));
   }, [Dispatch, userId]);
 
   useEffect(() => {
@@ -74,14 +78,13 @@ const Profile = () => {
     formData.append("bio", updatedData?.bio);
     formData.append("profile", updatedData?.profileSrc);
 
-    console.log(updatedData, "updatedData");
-
     Dispatch(updateProfileApiCall(formData, successToaster));
     // calling the get profile api
 
     setshowUpadtePopup(false);
     setTimeout(() => {
-      Dispatch(GetUserInfoApiCall(userId));
+      Dispatch(GetUserInfoApiCall(userId, Navigate));
+      Dispatch(getProfileImageApiCall())
     }, 1000);
   };
 
@@ -93,8 +96,16 @@ const Profile = () => {
     let followerId = JSON.parse(localStorage.getItem("user"))?._id
     Dispatch(followUnfollowApiCall(followerId, userId, successToaster))
     setTimeout(() => {
-      Dispatch(GetUserInfoApiCall(userId));
+      Dispatch(GetUserInfoApiCall(userId, Navigate));
     }, 500);
+  }
+
+
+  if(UpdateProfileLoading || FollowUnfollowLoading || deleteUserLoading || ProfileData===null )
+  {
+    return(
+      <ProfileSkeleton/>
+    )
   }
 
   return (
@@ -119,21 +130,19 @@ const Profile = () => {
                   <p className=" text-lg font-semibold">Posts</p>
                 </div>
                 {/* Total Followers */}
-                <div className="w-24 h-16 flex flex-col justify-center items-center hover:bg-slate-50 rounded-lg" onClick={()=>
-                  {
-                    // navigating to the follower list
-                    Navigate(`/followers/${userId}`)
-                  }
+                <div className="w-24 h-16 flex flex-col justify-center items-center hover:bg-slate-50 rounded-lg" onClick={() => {
+                  // navigating to the follower list
+                  Navigate(`/followers/${userId}`)
+                }
                 }>
                   <p className=" text-lg font-semibold">{ProfileInfo?.followers.length}</p>
                   <p className=" text-lg font-semibold cursor-pointer" >Followers</p>
                 </div>
                 {/* total following  */}
-                <div className="w-24 h-16 flex flex-col justify-center items-center hover:bg-slate-50 rounded-lg" onClick={()=>
-                  {
-                    // navigating to the follower list
-                    Navigate(`/followers/${userId}`)
-                  }
+                <div className="w-24 h-16 flex flex-col justify-center items-center hover:bg-slate-50 rounded-lg" onClick={() => {
+                  // navigating to the follower list
+                  Navigate(`/followers/${userId}`)
+                }
                 }>
                   <p className=" text-lg font-semibold">{ProfileInfo?.followings.length}</p>
                   <p className=" text-lg font-semibold cursor-pointer">Following</p>
@@ -188,9 +197,10 @@ const Profile = () => {
               </button>
             }
 
-
-
-
+            {/* delete profile Popup */}
+            {
+              presentUser && <DeleteProfilePopup text={"Delete Account"} />
+            }
           </div>
           <div>
             {ProfileInfo?.profileSrc ? (
@@ -255,7 +265,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      {( UpdateProfileLoading || FollowUnfollowLoading) && <Loader />}
+      {(UpdateProfileLoading || FollowUnfollowLoading || deleteUserLoading) && <Loader />}
 
       {/* update profile popup */}
       {showUpdatePopup && (

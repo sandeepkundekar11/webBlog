@@ -81,14 +81,14 @@ const AddBlog = () => {
     };
 
     //checking blog heading is entered or not if not then will through the warning
-    if (Blog.heading.length < 6) {
+    if (Blog.heading.length <= 5) {
       newWarning.headingWarning = "Heading can't be less then 6 characters";
     } else {
       newWarning.headingWarning = "";
     }
 
     // Checking if Blog content is entered or not if not then will through the warning
-    if (Blog.content.length < 10) {
+    if (Blog.content.length <= 9) {
       newWarning.ContentWarning = "Content can't be less then 10 characters";
     } else {
       newWarning.ContentWarning = "";
@@ -107,8 +107,8 @@ const AddBlog = () => {
     // checking for all the blog fields conditions
 
     if (
-      Blog.heading.length > 7 &&
-      Blog.content.length > 11 &&
+      Blog.heading.length >= 6 &&
+      Blog.content.length >=10 &&
       Blog.categories.length > 0
     ) {
       // call api

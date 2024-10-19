@@ -3,13 +3,15 @@ import { useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import { blogCategories, customStyles, editorConfig } from "../Constants";
 import PopupContainerProvider from "../helperComponents/PopupContainerProvider";
-const UpdateBlogPopup = ({ ImageUrl=null, Heading, Content, SelectedCategoriesArr = [], onCancel }) => {
+import ToasterLogic from '../Logic/ToasterLogic';
+const UpdateBlogPopup = ({ ImageUrl = null, Heading, Content, SelectedCategoriesArr = [], onCancel,UpdateBlogFun }) => {
     const [UpdateBlog, setUpdateBlog] = useState({
         ImageUrl: null,
         blogHeading: "",
         BlogContent: "",
         BlogSelectedCategoriesArr: []
     })
+    const { successToaster } = ToasterLogic()
     const ImageRef = useRef(null)
     // image state to store the url of the updated image
     const [BlogImage, setBlogImage] = useState(null)
@@ -35,15 +37,15 @@ const UpdateBlogPopup = ({ ImageUrl=null, Heading, Content, SelectedCategoriesAr
                     <div className='m-auto h-48 w-full bg-slate-50 rounded-md'>
                         {
                             // if the Blog image or updated image is not null then we will display that image
-                            (UpdateBlog?.ImageUrl!==null || BlogImage !== null) ? <div className="BlogImage relative w-3/4 m-auto h-48  mt-4 bg-slate-100 updateBlogImage ">
+                            (UpdateBlog?.ImageUrl !== null || BlogImage !== null) ? <div className="BlogImage relative w-3/4 m-auto h-48  mt-4 bg-slate-100 updateBlogImage ">
                                 <button className='absolute -top-2 -right-2 w-8 h-8 bg-slate-400 text-black hover:text-white hover:bg-red-500 shadow-lg rounded-full ' onClick={() => {
                                     setUpdateBlog({ ...UpdateBlog, ImageUrl: null })
                                     setBlogImage(null)
                                     // ImageRef.current.value = null
                                 }}>X</button>
-                                <img className="h-full m-auto" src={ BlogImage || UpdateBlog?.ImageUrl } alt="das" />
+                                <img className="h-full m-auto" src={BlogImage || UpdateBlog?.ImageUrl} alt="das" />
                             </div>
-                            // else displaying the input field to add the image
+                                // else displaying the input field to add the image
                                 :
                                 <div className="w-full h-full mt-3 m-auto flex justify-center items-center">
                                     <input ref={ImageRef} type="file" onChange={(e) => {
@@ -51,7 +53,7 @@ const UpdateBlogPopup = ({ ImageUrl=null, Heading, Content, SelectedCategoriesAr
                                         let ImageSrc = URL.createObjectURL(file)
                                         setUpdateBlog({
                                             ...UpdateBlog,
-                                            ImageUrl:file
+                                            ImageUrl: file
                                         })
                                         setBlogImage(ImageSrc)
                                         console.log(file)
@@ -103,6 +105,13 @@ const UpdateBlogPopup = ({ ImageUrl=null, Heading, Content, SelectedCategoriesAr
                     <div className="updateBlogButtons flex mt-6">
                         <button className="w-28 h-10 bg-blue-500 shadow-md rounded-md mr-8 text-white hover:bg-blue-600" onClick={() => {
                             console.log(UpdateBlog)
+                            let formData = new FormData()
+
+                            formData.append("blog", UpdateBlog.ImageUrl)
+                            formData.append("heading", UpdateBlog.blogHeading)
+                            formData.append("content", UpdateBlog.BlogContent)
+                            formData.append("categories", JSON.stringify(UpdateBlog.BlogSelectedCategoriesArr))
+                            UpdateBlogFun(formData)
                         }}>Update</button>
                         <button className="w-28 h-10 bg-red-400 shadow-md rounded-md text-white hover:bg-red-600" onClick={onCancel}>Cancel</button>
                     </div>

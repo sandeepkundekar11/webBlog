@@ -16,10 +16,8 @@ const FollowComponent = ({ userArray = [], followUnfollow }) => {
                 profileColor: GetIframeColor(`${ele?.first_name}`[0])   // getting profile background color
             }
         })
-
-        console.log(updateArray)
         setUsers(updateArray)
-    }, [userArray])
+    }, [])
 
 
     return (

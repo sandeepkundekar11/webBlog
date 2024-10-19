@@ -23,7 +23,7 @@ const AddBlogController = asyncHandler(async (req, res) => {
         // get the userId from authentication  middleware
         author: req.userId,
         image: req?.file?.filename
-          ? `http://localhost:8000/${req.file.filename}`
+          ? `${process.env.BASE_URL}/${req.file.filename}`
           : null,
         heading,
         content,

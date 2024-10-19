@@ -1,3 +1,5 @@
+import { BASE_URL } from "../../Constants";
+
 export const REQUEST_ALL_BLOGS = "REQUEST_ALL_BLOGS";
 export const GET_ALL_BLOGS = "GET_ALL_BLOGS"
 export const GET_BLOG_ERROR = "BLOG_ERROR"
@@ -32,13 +34,12 @@ export const GetAllBlogsApiCall = () => {
             Dispatch(GetBlogRequestAction())
             let Token = localStorage.getItem("token")
             // calling get all blogs api
-            let response = await fetch("http://localhost:8000/blog/allBlog", {
+            let response = await fetch(`${BASE_URL}/blog/allBlog`, {
                 headers: {
                     "Authorization": `Bearer ${Token}`
                 }
             })
             let data = await response.json()
-            // console.log(data)
             if (data.blogs) {
                 // dispatching GetAllBlog  Action
                 Dispatch(GetAllBlogsAction(data.blogs))

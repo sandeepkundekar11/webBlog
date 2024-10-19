@@ -29,8 +29,7 @@ const Blog = ({
   return (
     // main blog container
     <div className="w-full  p-2 hover:bg-slate-100 rounded-md mt-2 border-2 ">
-      {/* getting and Blog title from props and displaying */}
-      <h1 className="text-2xl font-bold p-2">{Title}</h1>
+
       <div className="BloProfile min-w-48 max-w-full flex items-center p-2">
         {/* getting the profileSrc from props */}
         {/* if profileScr is not present then we will display Fist later of First and last name ex:"Sandeep kundekar" return "SK"  */}
@@ -63,11 +62,13 @@ const Blog = ({
           )}
         </div>
       </div>
-      <div className="flex">
+           {/* getting and Blog title from props and displaying */}
+           <h1 className="text-2xl font-bold p-2">{Title}</h1>
+      <div className="flex flex-wrap w-full">
         {/* mapping the categories which is extracted from props */}
         {Categories.map((ele, index) => {
           return (
-            <div key={index} className="w-24 p-2 rounded-2xl text-center bg-slate-200 m-2">
+            <div key={index} className="w-auto p-2 rounded-2xl text-center bg-slate-200 m-2">
               {ele}
             </div>
           );

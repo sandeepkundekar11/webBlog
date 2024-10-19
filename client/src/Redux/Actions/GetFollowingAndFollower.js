@@ -1,3 +1,5 @@
+import { BASE_URL } from "../../Constants"
+
 export const GET_FOLLOWING_FOLLOWERS = "GET_FOLLOWING_FOLLOWERS"
 export const GET_FOLLOWING_FOLLOWERS_REQUEST = "GET_FOLLOWING_FOLLOWERS_REQUEST"
 export const GET_FOLLOWING_FOLLOWERS_ERROR = "GET_FOLLOWING_FOLLOWERS_ERROR"
@@ -29,7 +31,7 @@ export const GetFollowingFollowersApiCall = (userId) => {
         try {
             Dispatch(getFollowerFollowingRequestAction())
             let token = localStorage.getItem("token")
-            let response = await fetch(`http://localhost:8000/blog/followingAndFollowersList/${userId}`, {
+            let response = await fetch(`${BASE_URL}/blog/followingAndFollowersList/${userId}`, {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
