@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ThreeDot from "../Images/three_dots.png";
 import IframeLogic from "../Logic/UserLogic";
-const Comment = ({ profileSrc, Name, commentText, commentAuthorId }) => {
+const Comment = ({ profileSrc, Name, commentText, commentAuthorId,OnDelete }) => {
 
   const navigate=useNavigate()
   const { GetIframeColor, GetUserIcon } = IframeLogic()
@@ -76,7 +76,7 @@ const Comment = ({ profileSrc, Name, commentText, commentAuthorId }) => {
           <img src={ThreeDot} alt="" />
           {/* delete popup */}
           {showDeletePopup && (
-            <div className="shadow-xl -mt-1 flex items-center justify-center -ml-24  w-32 h-10 rounded-md border bg-white">
+            <div className="shadow-xl -mt-1 flex items-center justify-center -ml-24  w-32 h-10 rounded-md border bg-white" onClick={OnDelete}>
               Delete
             </div>
           )}

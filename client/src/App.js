@@ -4,6 +4,7 @@ import AddBlog from "./Components/Main/AddBlog";
 import FollowersList from "./Components/Main/FollowersList";
 import Home from "./Components/Main/Home";
 import Login from "./Components/Main/Login";
+import Page404 from "./Components/Main/Page404";
 import Profile from "./Components/Main/Profile";
 import SignUp from "./Components/Main/Signup";
 import ViewBlog from "./Components/Main/ViewBlog";
@@ -24,8 +25,9 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/addblog" element={<AddBlog />} />
             <Route path="/viewblog/:id" element={<ViewBlog />} />
-            <Route path="/profile/:userId" element={<Profile/>}/>
-            <Route path="/followers/:userId" element={<FollowersList/>}/>
+            <Route path="/profile/:userId" element={<Profile />} />
+            <Route path="/followers/:userId" element={<FollowersList />} />
+            <Route path="/*" element={<Page404 />} />
           </Route>
           {/* Protected Wrapper ends */}
 

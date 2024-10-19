@@ -1,9 +1,9 @@
-import JoditEditor from 'jodit-react';
+import JoditEditor from "jodit-react";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-import { blogCategories, customStyles } from "../../Constants";
+import { blogCategories, customStyles, editorConfig } from "../../Constants";
 import Loader from "../../helperComponents/Loader";
 import uploadImg from "../../Images/Upload-img.png";
 import { addBlogApiCall } from "../../Redux/Actions/AddblogAction";
@@ -81,14 +81,14 @@ const AddBlog = () => {
     };
 
     //checking blog heading is entered or not if not then will through the warning
-    if (Blog.heading.length < 6) {
+    if (Blog.heading.length <= 5) {
       newWarning.headingWarning = "Heading can't be less then 6 characters";
     } else {
       newWarning.headingWarning = "";
     }
 
     // Checking if Blog content is entered or not if not then will through the warning
-    if (Blog.content.length < 10) {
+    if (Blog.content.length <= 9) {
       newWarning.ContentWarning = "Content can't be less then 10 characters";
     } else {
       newWarning.ContentWarning = "";
@@ -107,8 +107,8 @@ const AddBlog = () => {
     // checking for all the blog fields conditions
 
     if (
-      Blog.heading.length > 7 &&
-      Blog.content.length > 11 &&
+      Blog.heading.length >= 6 &&
+      Blog.content.length >=10 &&
       Blog.categories.length > 0
     ) {
       // call api
@@ -169,13 +169,13 @@ const AddBlog = () => {
           <div className="blogContent mt-4">
             {/* title */}
             <div className="Heading">
-              <p className="text-lg font-medium pb-2">Title</p>
-              <input
+             
+              <textarea
                 type="text"
                 name="heading"
                 onChange={HandleBlogInput}
-                className="w-full h-10 border-2 pl-3 outline-none focus:border-blue-500"
-                placeholder="Title"
+                className="w-full  placeholder:font-extrabold min-h-12 max-h-36 md:text-4xl sm:text-xl font-extrabold pl-3 outline-none placeholder:text-gray-700 text-black"
+                placeholder="New Post Title here ...."
               />
               {/* heading warning */}
               <p className="text-sm text-red-500 font-medium">
@@ -184,16 +184,8 @@ const AddBlog = () => {
             </div>
             {/* blog body (content) */}
             <div className="Content">
-              <p className="text-lg font-medium mt-3 pb-2"> Content</p>
-              {/* <textarea
-                rows={5}
-                onChange={HandleBlogInput}
-                placeholder="Type your blog"
-                name="content"
-                id=""
-                className=" outline-none w-full border-2 pl-3 p-2 focus:border-blue-500"
-              ></textarea> */}
-              <JoditEditor ref={editor} value={Blog.content} onChange={(newContent) => {
+            
+              <JoditEditor   className='jodit-container' config={editorConfig}  ref={editor} value={Blog.content} onChange={(newContent) => {
                 setBlog({
                   ...Blog,
                   content: newContent
@@ -211,10 +203,11 @@ const AddBlog = () => {
             {/* categories */}
             <div className="categories">
               {/* using the multi select dropdown */}
-              <p className="text-lg font-medium mt-2">Select Categories</p>
+
               <Select
-                className="w-full h-10 "
+                className="w-full h-10 border-none outline-none"
                 isMulti
+                placeholder="Select The Categories"
                 options={blogCategories}
                 styles={customStyles}
                 defaultValue={Blog.categories}

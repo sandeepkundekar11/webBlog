@@ -1,3 +1,5 @@
+import { BASE_URL } from "../../Constants";
+
 export const UPADTE_PROFILE = "UPDATE_PROFILE";
 export const UPDATE_PROFILE_REQUEST = "UPDATE_PROFILE_REQUEST";
 export const UPDATE_PROFILE_ERROR = "UPDATE_PROFILE_ERROR";
@@ -29,7 +31,7 @@ export const updateProfileApiCall = (updateProfileData, success) => {
     let token = localStorage.getItem("token");
     try {
       Dispatch(updateProfileRequestAction());
-      let response = await fetch("http://localhost:8000/blog/updeteProfile", {
+      let response = await fetch(`${BASE_URL}/blog/updeteProfile`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

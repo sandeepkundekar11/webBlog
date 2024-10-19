@@ -1,3 +1,5 @@
+import { BASE_URL } from "../../Constants"
+
 export const DELETE_BLOG = "DELETE_BLOG"
 export const DELETE_BLOG_REQUEST = "DELETE_BLOG_REQUEST"
 export const DELETE_BLOG_ERROR = "DELETE_BLOG_ERROR"
@@ -30,7 +32,7 @@ export const DeleteBlogApiCall = (blogId,navigate,id) => {
         try {
             let token = localStorage.getItem("token")
             Dispatch(deleteBlogRequestAction())
-            let response = await fetch(`http://localhost:8000/blog/deleteBlog/${blogId}`, {
+            let response = await fetch(`${BASE_URL}/blog/deleteBlog/${blogId}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`

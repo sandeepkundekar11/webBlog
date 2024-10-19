@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavBar from "./Components/NavBar";
+import { getProfileImageApiCall } from "./Redux/Actions/ProfileImageAction";
 
 const PrivateComponent = () => {
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+  const Dispatch = useDispatch()
   // Authentication variable "defautl"  true
   const [authenticated, setAuthenticated] = useState(true);
-  const [UserId,setUserID]=useState(null)
+  const [UserId, setUserID] = useState(null)
   //   getting the current route path
   const [path, setPath] = useState(null);
   //   using the uselocation hook for getting the current (path) route
@@ -22,8 +29,8 @@ const PrivateComponent = () => {
   useEffect(() => {
     // getting the token from local storage
     let token = localStorage.getItem("token");
-    let userId=JSON.parse(localStorage.getItem("user"))?._id
-    console.log(userId,"userId")
+    let userId = JSON.parse(localStorage.getItem("user"))?._id
+    console.log(userId, "userId")
     setUserID(userId)
     if (token) {
       // if Token is present the user is authenticated
@@ -32,7 +39,15 @@ const PrivateComponent = () => {
       // and if token is not present then user is authenticated
       setAuthenticated(false);
     }
+    Dispatch(getProfileImageApiCall())
+
+    setScreenSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+
   }, []);
+
   return (
     <div>
       {authenticated ? (
@@ -42,16 +57,17 @@ const PrivateComponent = () => {
           <NavBar path={path} userId={UserId} />
           <Outlet />
           <ToastContainer
-            position="bottom-right"
+            position="top-center"
             autoClose={5000}
-            hideProgressBar={false}
+            hideProgressBar={true}
             newestOnTop={false}
             closeOnClick
             rtl={false}
             pauseOnFocusLoss
             draggable
             pauseOnHover
-            theme="light"/>
+            theme="dark"
+          />
         </>
       ) : (
         // if user is not authenticated then Directaly Navigate to Login page to login the user

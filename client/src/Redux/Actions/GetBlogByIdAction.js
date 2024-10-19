@@ -1,3 +1,5 @@
+import { BASE_URL } from "../../Constants";
+
 export const GET_BLOG_BY_ID = "GET_BLOG_BY_ID";
 export const GET_BLOG_BY_ID_REQUEST = "GET_BLOG_BY_ID_REQUEST"
 export const GET_BLOG_BY_ID_ERROR = "GET_BLOG_BY_ID_ERROR";
@@ -26,7 +28,7 @@ const getBlogByIdErrorAction = (err) => {
 
 // calling the get blog by id api
 
-export const getBlogByIdApiCall = (id) => {
+export const getBlogByIdApiCall = (id, Navigate) => {
     return async (Dispatch) => {
         // dispatching the getBlogByIdRequestAction
         Dispatch(getBlogByIdRequestAction())
@@ -34,13 +36,17 @@ export const getBlogByIdApiCall = (id) => {
         let token = localStorage.getItem("token")
         try {
             // calling the get  blog by id api
-            let response = await fetch(`http://localhost:8000/blog/getBlog/${id}`, {
+            let response = await fetch(`${BASE_URL}/blog/getBlog/${id}`, {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
             })
 
             let data = await response.json()
+            if (data.blog === null) {
+                // this logic is called when blog author delete the post and other person tries to access that blog
+                Navigate("/noBlog")
+            }
             if (data.blog) {
                 // dispatching the getBlogByIdAction method
                 Dispatch(getBlogByIdAction(data.blog))

@@ -13,13 +13,16 @@ import IframeLogic from "../../Logic/UserLogic";
 import { addCommentApiCall } from "../../Redux/Actions/AddCommentAction";
 import { getLikesApiCall } from "../../Redux/Actions/AddLikeAction";
 import { DeleteBlogApiCall } from "../../Redux/Actions/DeleteBlogAction";
+import { DeleteCommentApiCall } from "../../Redux/Actions/DeleteCommentAction";
 import { followUnfollowApiCall } from "../../Redux/Actions/FollowAndUnfollowAction";
 import { getBlogByIdApiCall } from "../../Redux/Actions/GetBlogByIdAction";
 import {
   getAllCommentApiCall,
   GetAllLikesApiCall,
 } from "../../Redux/Actions/GetCommentsAndLikesAction";
+import { UpdateBlogApiCall } from "../../Redux/Actions/UpdateBlogAction";
 import ManageBlogPopup from "../ManageBlogPopup";
+import ViewProfileSkeleton from "../SkeletonComponents/ViewProfileSkeleton";
 import UpdateBlogPopup from "../UpdateBlogPopup";
 const ViewBlog = () => {
   const navigate = useNavigate();
@@ -80,9 +83,18 @@ const ViewBlog = () => {
     // getting all the blog comments
     Dispatch(getAllCommentApiCall(id));
     // calling the api getBlogById
-    Dispatch(getBlogByIdApiCall(id));
+    Dispatch(getBlogByIdApiCall(id,navigate));
+   
   }, [Dispatch, id]);
 
+  useEffect(()=>
+  {
+    console.log(blogData)
+    if(blogData===null)
+    {
+      // navigate("/noBlog")
+    }
+  },[blogData])
   useEffect(() => {
     // here we are rotating the comments array so that alway user will see lateast comments
     let RotatedArr = [];
@@ -179,11 +191,23 @@ const ViewBlog = () => {
     Dispatch(followUnfollowApiCall(followerId, blogAuthorId, successToaster))
     setTimeout(() => {
       // calling the api getBlogById
-      Dispatch(getBlogByIdApiCall(id));
+      Dispatch(getBlogByIdApiCall(id,navigate));
     }, 500)
   }
 
+  // Update Blog states
 
+  const { UpdateBlogLoading } = useSelector((state) => state.UpadteBlogInfo)
+
+  // Delete Comments states
+  const { DeleteCommentLoading } = useSelector((state) => state.DeleteComment)
+
+  if (blogLoading || blogData === null || UpdateBlogLoading || DeleteCommentLoading) {
+    return (
+      // showing the Skeleton loading
+      <ViewProfileSkeleton />
+    )
+  }
 
   return (
     <div className="h-full w-full pt-20 pb-10">
@@ -280,7 +304,7 @@ const ViewBlog = () => {
         </div>
 
         {/* Blog content */}
-        <p dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(viewBlog?.content)}} className="mt-4 text-xl"/>
+        <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(viewBlog?.content) }} className="mt-4 text-xl" />
 
         {/* bellow like comment share buttons container */}
 
@@ -371,6 +395,14 @@ const ViewBlog = () => {
                     commentText={ele?.content}
                     profileSrc={ele?.author?.profileSrc}
                     commentAuthorId={ele?.author?._id}
+                    OnDelete={() => {
+                      // delete blog
+                      Dispatch(DeleteCommentApiCall(id, ele?._id, successToaster))
+                      setTimeout(() => {
+                        // getting all the blog comments
+                        Dispatch(getAllCommentApiCall(id));
+                      }, 300)
+                    }}
                   />
                 );
               }
@@ -426,7 +458,7 @@ const ViewBlog = () => {
           onUpdate={() => {
             setShowUpdateBlog(true)
             setOpenManagePopup(false);
-           }}
+          }}
         />
       )}
 
@@ -444,9 +476,21 @@ const ViewBlog = () => {
               label: ele
             }
           })}
-          ImageUrl={viewBlog?.image}
+          ImageUrl={viewBlog?.image || null}
           onCancel={() => {
             setShowUpdateBlog(false)
+          }
+          }
+          blogId={id}
+          UpdateBlogFun={(data) => {
+            Dispatch(UpdateBlogApiCall(id, data, successToaster))
+            //  hiding update blog popup
+            setShowUpdateBlog(false)
+            // calling the api getBlogById // get blog
+            setTimeout(() => {
+              // calling the api getBlogById
+              Dispatch(getBlogByIdApiCall(id,navigate));
+            }, 500)
           }
           }
         />
